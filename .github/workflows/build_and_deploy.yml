@@ -15,8 +15,8 @@ jobs:
       - name: 🤖 Compile LaTeX document
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: src/08-Thesis_CHOPIN.tex
-          post_compile: "mkdir build && mv src/08-Thesis_CHOPIN.pdf ../build"
+          root_file: 08-Thesis_CHOPIN.tex
+          post_compile: "mkdir build && mv 08-Thesis_CHOPIN.pdf build"
 
       - name: 🚀 Deploy
         uses: JamesIves/github-pages-deploy-action@v4.3.3
