@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main
+permissions: 
+  contents: write
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v3
+
+      - name: 🤖 Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          working_directory: src
+          root_file: 08-Thesis_CHOPIN.tex
+          post_compile: "mkdir build && mv 08-Thesis_CHOPIN.pdf build"
+
+      - name: 🚀 Deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages
+          folder: build
