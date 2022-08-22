@@ -10,7 +10,13 @@
 %***************************************************************************************************************
 % Note: Make all your adjustments in here
 %***************************************************************************************************************
+
 \input{htwsaar-i-mst-config}
+
+% import code highlight styles
+
+\input{CodeBlockStyles/css}
+
 
 %********************************************************************
 % Hyphenation
@@ -29,6 +35,8 @@
 %*******************************************************
 % Frontmatter
 %*******************************************************
+\graphicspath{ {./Graphics/} }
+
 \include{FrontBackmatter/Titlepage}
 \cleardoublepage\include{FrontBackmatter/Declaration}
 %\cleardoublepage\include{FrontBackmatter/ConfidentialityClause} % <-- sollte in der Regel nicht notwendig sein und mit Betreuer/Unternehmen abgeklärt werden
