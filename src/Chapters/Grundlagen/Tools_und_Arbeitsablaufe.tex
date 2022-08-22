@@ -63,3 +63,63 @@ Das innerhalb des Unternehmens verwendete Modell ist recht einfach. Es besteht a
 \end{figure}
 
 Das Cloud-Team nahm eine Änderung am Schema vor und entfernte den branch develop, der angesichts der geringen Größe des Teams nicht relevant war.
+
+\subsubsection{Slack}
+Die Kommunikation innerhalb der Firma erfolgt mithilfe der Slack application\footnote{\href{https://slack.com/}{https://slack.com/}}.
+Damit können wir einander leicht anrufen und unsere Sofortnachrichten auf verschiedene Kanälen organisieren.
+
+\subsubsection{Clickup}
+
+Clickup\footnote{\href{https://clickup.com/}{https://clickup.com/}} ermöglicht es uns, unseren agilen Prozess zu virtualisieren:
+Tickets, Kanban-Tafel, Sprint-Planung, Roadmap, ...
+
+\subsubsection{Google Workspace}
+
+Die Dryad-Teams verwenden Google Workspace-Tools, um die externe Kommunikation über Google Mail, die Finanzen über Google Sheets, die Speicherung verschiedener Dateien und Bilder mit Google Drive und die Bearbeitung von Textdateien mit Google Doc zu verwalten.
+
+\subsubsection{GitHub}
+
+Die Verwendung von GitHub ermöglicht es, die Git-Projekte des Unternehmens online zu hosten.
+Es ermöglicht uns die einfache Verwaltung unseres Quellcodes in Zusammenarbeit mit verschiedenen Features wie Code-Reviews, Veröffentlichung von npm-Paketen und kontinuierlicher Integration.
+
+\subsection{Developer Experience}
+Da der Tech Stack definiert ist, ist es möglich, das Projekt zu starten und etwas aufzubauen.
+Es kann jedoch Bedenken geben, wenn mehrere Entwickler gleichzeitig am gleichen Quellcode arbeiten (Konflikte, Code-Formatierung, Sicherstellung der Gültigkeit des Codes, ...).
+Deshalb ist es wichtig, bestimmte Regeln und Tools einzuführen, die es dem Entwickler ermöglichen, sich auf die eigentliche Aufgabe zu konzentrieren.
+Für die Schaffung dieses Projekts war es wesentlich, die folgenden Tools/Prozesse zu implementieren, um sich in einer einfachen und homogenen Entwicklungsumgebung leicht weiterentwickeln zu können.
+
+\subsubsection{Linter}
+Ein Linter ist ein AnalyseTool für den statischen Code, das zur Kennzeichnung von Programmierfehlern, Bugs, stilistischen Fehlern und verdächtigen Konstrukten verwendet wird.
+Es wurde beschlossen, den eslint\footnote{\href{https://github.com/eslint/eslint}{https://github.com/eslint/eslint}} Javascript-Linter wegen seiner Popularität und seiner verschiedenen, leicht konfigurierbaren Plugins zu verwenden (Angular\footnote{\href{https://github.com/angular-eslint/angular-eslint}{https://github.com/angular-eslint/angular-eslint}}, TypeScript\footnote{\href{https://github.com/typescript-eslint/typescript-eslint}{https://github.com/typescript-eslint/typescript-eslint}}, ...).
+
+Eslint erlaubt es, den von jedem Entwickler geschriebenen Code zu homogenisieren.
+So ist die Einrückung für alle gleich, ebenso wie Zeilenumbrüche, Leerzeichen, variable Notation, usw...
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=\textwidth]{eslint_error}
+  \caption{Beispiel für die Linter-Ausführung, die einen Fehler und einige Warnungen im Terminal zurückgibt}
+\end{figure}
+
+\subsubsection{TypeScript}
+
+Typescript ist ein Tool, das entwickelt wurde, um Entwicklern die einfache Realisierung von JavaScript-Projekten zu erleichtern.
+Da es aber sehr anpassungsfähig ist, muss jedoch bekannt sein, was von diesem Tool erwartet wird und wie es verwendet werden soll.
+
+Es wurde daher beschlossen, TypeScript mit einer hohen Anforderung zu konfigurieren.
+Daher muss alles typisiert werden (Variablen, Funktionen, Parameter), damit jeder Entwickler leichter verstehen kann, was an jeder Stelle im Code geschieht.
+Darüber hinaus ist der "beliebige" Typ verboten, da er die Verwendung von TypeScript überflüssig macht.
+
+Dies mag dem DX-Prinzip zuwiderlaufen, da es anfangs viele Einschränkungen mit sich bringt, aber nach einer kurzen Anpassungszeit kommen die Vorteile eines stark typisierten Codes schnell zum Tragen und verbessern die Erfahrung des Entwicklers erheblich.
+
+\subsubsection{Drone CI}
+
+In jedem Beruf ist es sehr ärgerlich, immer wieder die gleichen Aufgaben auszuführen.
+In der Entwicklungswelt müssen wir zum Beispiel sicherstellen, dass der zur Produktion geschickte Code dem Linters-Standard entspricht, sich problemlos kompilieren lässt und vorher alle Tests besteht.
+Ständig darauf achten zu müssen, sie nicht zu vergessen, belastet die Entwickler unnötig mental.
+
+Aus diesem Grund verwendet das Unternehmen ein kontinuierliches Integrations-Tool, Drone CI\footnote{\href{https://www.drone.io/}{https://www.drone.io/}}.
+Es ist sehr kompatibel mit GitHub und ermöglicht, bestimmte Aufgaben auszuführen, wenn Code auf GitHub gepusht wird.
+
+Seine große Stärke ist die Einfachheit der Konfiguration. Es muss nämlich nach der Verknüpfung von travis mit dem GitHub-Projekt nur noch eine einfache \lstinline!.drone.yml!-Datei an
+der Root des Projekts erstellt und bearbeitet werden.
