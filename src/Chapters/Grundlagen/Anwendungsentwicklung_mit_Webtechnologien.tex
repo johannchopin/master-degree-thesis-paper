@@ -74,7 +74,66 @@ Einige der beliebtesten sind \href{https://github.com/facebook/react/}{React}\fo
   \centering
   \includegraphics[width=\textwidth]{loved_frameworks}
   \caption{Stackoverflow Survey 2022: Beliebteste Web-Frameworks}
-  \label{fig:spa}
 \end{figure}
 
 Angular wurde aufgrund seines umfassenden Designs, seiner großen Nutzergemeinde und der Tatsache, dass das Team bereits über fundierte Kenntnisse in diesem Tool verfügte, als Framework ausgewählt.
+
+\subsection{Npm}
+Es ist derzeit undenkbar, eine Webapplikation von Grund auf neu zu entwickeln.
+Es gibt eine Vielzahl von Open-Source-Bibliotheken, die von verschiedenen Entwicklern entwickelt wurden und mit denen unsere Anwendung schnell und einfach erstellen werden kann.
+Deshalb ist es notwendig, ein Tool zu benutzen, um die verschiedenen Bibliotheken, die verwendet werden, zu organisieren.
+
+\ac{NPM} ist das Zentrum der gemeinsamen Nutzung von JavaScript-Code und mit mehr als einer Million Paketen und 11 Millionen Entwickler weltweit die größte Software-Registry der Welt\footnote{npmjs offizielle Website: \href{https://www.npmjs.com/}{https://www.npmjs.com/}}.
+Aufgrund dieses guten Renommees beschloss das Team, NPM zur Verwaltung der verschiedenen Bibliotheken einzusetzen.
+
+\subsection{SASS}
+Angular erlaubt es, das DOM einer Webanwendung leicht zu manipulieren, bleibt nur noch, sie zu stylen.
+Es wird dafür der Stylesheet-Kernsprachen des World Wide Webs verwenden, \ac{CSS}.
+
+Leider kann CSS schnell überflüssig und schwierig zu handhaben werden, wenn es darum geht, mehrere Dutzend Elemente gleichzeitig zu bearbeiten.
+Um dieses Problem zu überwinden, wurde der CSS-Präprozessor \ac{SASS} geschaffen, der die Verwendung von Variablen, Schleifen und Funktionen erlaubt, die in CSS umgesetzt werden.
+
+Die folgende Abbildung zeigt die gleiche Style-Deklaration mit CSS und SASS:
+
+\begin{table}[htb]
+  \caption{Beispiel für die Deklaration von Styles in css und sass }
+  \begin{tabular}{c c}
+    CSS & SASS \\
+    \begin{lstlisting}[language=css]
+  ul {
+    background-color: red;
+  }
+
+  ul.hide {
+    opacity: 0;
+  }
+
+  ul.hide li {
+    text-decoration: underline;
+  }
+      \end{lstlisting}
+        &
+    \begin{lstlisting}[language=css]
+  ul {
+    background-color: red;
+
+    &.hide {
+      opacity: 0;
+
+      li {
+        text-decoration: underline;
+      }
+    }
+  }
+            \end{lstlisting}
+  \end{tabular}
+\end{table}
+
+Es wurde daher beschlossen, diesen css-Prozessor im Projekt zu verwenden. Außerdem bietet Angular eine bereits fertige Sass-Kompilation an.
+
+\subsection{Angular Routing}
+
+Der Antrag wird also von einer einzigen Seite generiert, was aber nicht bedeutet, dass ein Wechsel der URLs nicht möglich ist.
+Tatsächlich kann eine SPA dank Javascript auf verschiedenen URLs laufen.
+Angular bringt ein eigenes Routing-System namens Angular Routing\footnote{https://angular.io/guide/routing-overview} mit, das es ermöglicht, bestimmte Komponenten auf der Grundlage der URL anzuzeigen. Das Projekt wird diese Lösung verwenden, um das Routing der Anwendung zu verwalten.
+
