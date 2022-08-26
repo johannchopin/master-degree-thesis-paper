@@ -4,11 +4,14 @@
 \documentclass[ twoside,openright,titlepage,numbers=noenddot,%
 				toc=bibliography,toc=listof,%
                 footinclude=false,headinclude=false,cleardoublepage=empty,%
-				BCOR=5mm,paper=a4,fontsize=11pt
+				BCOR=5mm,paper=a4,fontsize=11pt,
+                dvipsnames
                 %,ngerman%
                 ]{scrreprt}
 %***************************************************************************************************************
 % Note: Make all your adjustments in here
+\usepackage{pdfpages}
+\usepackage{float}
 %***************************************************************************************************************
 
 \input{htwsaar-i-mst-config}
@@ -69,7 +72,7 @@
 %***************************************************************
 \appendix
 \part*{Anhang}
-% \cleardoublepage\include{Chapters/Anhang-A}
+\cleardoublepage\include{Chapters/Anhang}
 
 %*******************************************************
 \cleardoublepage\include{FrontBackmatter/Colophon}

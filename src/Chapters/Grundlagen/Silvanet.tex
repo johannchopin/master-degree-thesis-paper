@@ -5,13 +5,26 @@ Ein Team für die Entwicklung von Hardware und eingebetteten Systemen beschäfti
 Wenn eine Veränderung festgestellt wird, wird ein Scan initiiert und eine eingebaute künstliche Intelligenz bestimmt, ob es sich um die Verbrennung handelt.
 Der Vorteil der künstlichen Intelligenz besteht darin, dass sie mehrere Variationen als nur die einfache Verbrennung erkennen kann. So kann man feststellen, ob es sich nur um einen Diesel-LKW handelt, der in der Nähe vorbeifährt, oder ob es sich um ein Feuer aus einem bestimmten Holz handelt, etc.
 
-Diese Sensoren werden mithilfe der LoRaWAN-Technologie miteinander verbunden, die es ermöglicht, ein großes Netzwerk mit geringem Stromverbrauch aufzubauen. Die Daten der Sensoren werden über Gateways an den Backend-Dienst von dryad gesendet, der sie sammelt und verarbeitet.
-Nach der Verarbeitung können die verschiedenen Informationen der zu Standorten zusammengefassten Sensoren abgerufen und in der Webanwendung von dryad angezeigt werden.
+Diese Sensoren werden mithilfe der LoRaWAN-Technologie miteinander verbunden, die es ermöglicht, ein großes Netzwerk mit geringem Stromverbrauch aufzubauen.
+Die LoRaWAN-Netzwerkarchitektur wird in einer sternförmigen Topologie eingesetzt, in der Gateways Nachrichten zwischen Endgeräten und einem zentralen Netzwerkserver weiterleiten
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=11cm]{stars_topology}
+  \caption{Schematisierung einer Star-of-Stars-Netzwerk-Architektur, bestehend aus \textit{Nodes} und \textit{Gateways}, die vom LoRaWAN-Standard verwendet wird\cite{phdthesisLoRA}}
+\end{figure}
+
+In der Silvanet-Architektur von Dryad entsprechen die Nodes den Sensoren, die Waldbrände erkennen sollen. Wir nennen sie Sensors.
+Silvanet verwendet dann 2 Arten von Gateways, um die Informationen von den Sensoren nach außerhalb des Netzwerks zu leiten (Dryads Cloud-Backend-Service).
+Der erste Typ heißt \textit{Mesh-Gateway} und ermöglicht die Netzwerkabdeckung über große Entfernungen zwischen den Sensoren und andere Mesh-Gateways.
+Die zweite Art von Gateways, die \textit{Borders Gateways}, übertragen die Daten der Mesh Gateways nach außerhalb des LoRaWAN-Netzwerks, indem sie mit dem Backend-Service von Dryad kommunizieren.
+
+Nach der Verarbeitung können die verschiedenen Informationen der zu Standorten zusammengefassten Sensoren abgerufen und in der Webanwendung von Dryad angezeigt werden.
 Mit dieser Anwendung kann sich ein Benutzer anmelden, die Installation von Sensoren an einem Standort planen, die verschiedenen gesammelten Daten in Echtzeit verfolgen und die Art einer Waldbrandwarnung im Detail abrufen.
 
 \begin{figure}[h]
   \centering
-  \includegraphics[width=\textwidth]{silvanet_architecture}
+  \includegraphics[width=12cm]{silvanet_architecture}
   \caption{Schematische Darstellung des LoRaWAN-Netzwerks, das die verschiedenen Sensoren mit dem Cloud-System verbindet.}
 \end{figure}
 
@@ -21,5 +34,3 @@ Mit dieser Anwendung kann sich ein Benutzer anmelden, die Installation von Senso
   \includegraphics[width=4cm]{dryad_sensor}
   \caption{ein luftschnüffelnder Sensor, der ein Silvanet-Netzwerk bildet}
 \end{figure}
-
-% [TODO] improve
