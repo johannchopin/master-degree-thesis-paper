@@ -34,13 +34,107 @@ Die kritischsten Punkte werden in den folgenden Abschnitten nach Kriterien gegli
 Ein häufig anzutreffender Mangel in Schnittstellen ist das Fehlen von Labels in den Eingaben eines Formulars oder das Verwenden nur eines Icons.
 Dies passt zum Unterkriterium \textit{Prompting} und stellt ein echtes Verständnisrisiko für den Nutzer dar.
 Obwohl viele Icons von der Mehrheit der Menschen als üblich angesehen werden, bleibt es ein Risiko, sie zu verwenden, vor allem, wenn die Schnittstelle für mehrere Kulturtypen oder mehrere Ebenen der Computerkenntnisse auf Seiten der Benutzer bestimmt ist.
-Preethy PAPPACHAN und Martina ZIEFLE haben in ihrer Studie \textit{Cultural Influences on the Comprehensibility of Icons in Mobile-Computer-Interaction}\cite{iconsCultureInfluence} nachgewiesen, dass Icons in allen Kulturen im Allgemeinen als das erkannt werden, was sie darstellen, aber nicht als das, was sie bedeuten, was jedoch für die Verständlichkeit von Icons von großer Bedeutung ist.
+P. Pappachan und M. Ziefle haben in ihrer Studie \textit{Cultural Influences on the Comprehensibility of Icons in Mobile-Computer-Interaction}\cite{iconsCultureInfluence} nachgewiesen, dass Icons in allen Kulturen im Allgemeinen als das erkannt werden, was sie darstellen, aber nicht als das, was sie bedeuten, was jedoch für die Verständlichkeit von Icons von großer Bedeutung ist.
 So ist es notwendig, dass die Benutzeroberfläche Daten mit einer Erklärung präsentiert, die nicht nur ikonografisch ist, wie es auf dem folgenden Screenshot leider der Fall ist.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=4cm]{app_label_icon}
-  \caption{Darstellung mit Icons als einzigem Label.}
+  \caption{Darstellung mit Icons als einzigem Label}
+  \label{fig:app_label_icon}
 \end{figure}
 
-% [TODO]: add solution?
+Doch es ist einfach, Rückfragen oder Fehlinterpretationen seitens des Nutzers zu vermeiden, indem man einfach eine Textbeschriftung neben dem Symbol hinzufügt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_label_icon_good}
+  \caption{Hinzufügen von Textlabels zusätzlich zu den Icons, um die Verwechslung von \ref{fig:app_label_icon} einzuschränken}
+\end{figure}
+
+
+Ein weiteres Unterkriterium betrifft die ortsbezogene Gruppierung der Komponenten einer Schnittstelle nach ihrer Zugehörigkeit und Hierarchie.
+In der Tat wird der Benutzer \textit{die verschiedenen Elemente leichter erkennen, wenn sie in einer geordneten Weise präsentiert werden}\cite{bastienscapin}.
+Dies hat den Vorteil, dass die Items einer Schnittstelle schneller erlernt und leichter behalten werden können.
+Die Silvanet-Webschnittstelle ist voll von Stellen, an denen die Hierarchie der Komponenten betont werden könnte.
+Ein gutes Beispiel ist das folgende Filtermenü:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_filter_menu_bad}
+  \caption{Menü mit geringer hierarchischer Unterscheidung}
+  \label{fig:app_filter_menu_bad}
+\end{figure}
+
+Doch schon das Hinzufügen von etwas mehr Padding auf der Ebene der Items hilft dem menschlichen Auge, eine Hierarchie zu visualisieren, in der die Items zu dem Titel über ihnen gehören.
+Darüber hinaus kann ein Kollaps-System verwendet werden, um die Zugehörigkeit zu einer Kategorie weiter zu spezifizieren.
+Dieses System kann einfach durch ein Chevron-Symbol verdeutlicht werden.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_filter_menu_good}
+  \caption{Neustrukturierung des Menüs \ref{fig:app_filter_menu_bad}, um die Sichtbarkeit der Hierarchie zu erhöhen}
+\end{figure}
+
+Ähnlich wie das Unterkriterium Unterscheidung nach Ort gibt es auch das Unterkriterium Unterscheidung nach Formatierung.
+Ein gutes Beispiel dafür, wie dieses Kriterium angewendet werden könnte, ist die Anzeige von Namen und Kennungen von Einheiten wie Sensoren oder Gateways.
+In der folgenden Abbildung sehen wir eine Liste von Geräten, die mit einem Namen identifiziert werden, der eine Art Identifikator enthält.
+Da die Kennung eines Geräts nur als Text angezeigt wird, ist die Identifizierung langsamer.
+In dieser Form ahnt der Nutzer nicht, dass es möglich ist, mit diesem Text zu interagieren, indem er ihn anklickt.
+Dies ist jedoch der Fall, da es möglich ist, auf die Detailseite eines Geräts zu navigieren, indem man auf diese Art von Kennung klickt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7cm]{app_format_devices_id_bad}
+  \caption{Anzeige von Geräteentitäten ohne Differenzierung der Formatierung}
+  \label{fig:app_format_devices_id_bad}
+\end{figure}
+
+Das Hinzufügen eines einfachen/reinen Designs eines Tags oder einer Schaltfläche (Hintergrund mit schlichter Farbe und einem abgerundeten, ausgeprägten Rand) zu den Gerätekennungen je nach Gerätetyp hilft den Nutzern, eine dichte Benutzeroberfläche schneller zu lesen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7cm]{app_format_devices_id_good}
+  \caption{Anzeige von Geräteentitäten mit Differenzierung der Formatierung}
+  \label{fig:app_format_devices_id_good}
+\end{figure}
+
+Dies erleichtert dem Benutzer das Erlernen der Fähigkeit, diese Art von Entitäten über die gesamte Schnittstelle zu erkennen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{app_format_devices_id_extended}
+  \caption{Gemeinsame Nutzung der Formatierung der Entität Gerät}
+  \label{fig:app_format_devices_id_extended}
+\end{figure}
+
+Eine der Säulen der Benutzerführung zur Aufgabenerledigung ist das \textit{sofortige Feedback} nach einer Aktion.
+In allen Fällen sollte eine schnelle Antwort des Schnittstelle mit Informationen über die angeforderte Transaktion und ihr Ergebnis erfolgen.
+Leider verarbeitet die Silvanet-Anwendung nur sehr wenig Feedback zu den Aktionen des Benutzers.
+Aufgrund der geringen Effektivität und des Zeitmangels bei der Entwicklung der Schnittstelle wird dem Nutzer nur ein kleiner Teil der Erfolge gezeigt.
+Bei den meisten Knöpfen, die angeklickt werden, erhält der Nutzer z. B. kein Feedback. In den meisten Fällen wird die Aktion relativ schnell ausgeführt und der Nutzer schließt daraus auf einen Erfolg.
+Es kann jedoch vorkommen, dass die Aktion einige Zeit in Anspruch nimmt (z. B. bei einer schlechten Verbindung), und der Nutzer sollte darüber informiert werden, dass die Anfrage bearbeitet wird.
+
+Es ist daher von entscheidender Bedeutung, dass eine angeklickte Schaltfläche, die eine Aktion ausführt, dem Benutzer eine Schnittstelle präsentiert, die den Ladevorgang veranschaulicht.
+Dies kann leicht durch die Verwendung einer \ac{UI}-Komponente namens Spinner erreicht werden.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{app_example_loader}
+  \caption{Beispiel einer Schaltfläche, die nach dem Anklicken einen Spinner darstellt, der eine laufende Aktion anzeigt}
+  \label{fig:app_example_loader}
+\end{figure}
+
+Ein ähnliches Problem ist bei der Anzeige von Sensoren auf der interaktiven Karte zu erkennen.
+Tatsächlich werden die verschiedenen Geräte an einem Standort im Hintergrund abgerufen, sobald der Nutzer auf eine bestimmte Ebene zoomt.
+Wenn die Internetverbindung jedoch nicht schnell genug ist oder der Benutzer schnell zoomt, hat der Benutzer nicht das Gefühl, dass im Hintergrund eine Abfrage stattfindet, da nichts passiert, und sucht daher vergeblich nach Sensoren auf der Karte.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{app_sensors_map_loading}
+  \caption{Bei einer langsamen WLAN-Verbindung zoomt der Benutzer in eine \textit{Site} (blauer Bereich), aber es scheint nichts zu passieren. Erst nach einigen Sekunden sind die Sensoren sichtbar.}
+  \label{fig:app_sensors_map_loading}
+\end{figure}
+
+Dasselbe Problem findet sich in der überwiegenden Mehrheit der Schnittstelle, wo die meisten Abfragen (fetch/\ac{XHR}) dem Benutzer nicht angezeigt werden.
+
