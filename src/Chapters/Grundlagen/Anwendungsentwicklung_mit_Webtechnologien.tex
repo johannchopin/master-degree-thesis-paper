@@ -45,7 +45,7 @@ beweist:
   \centering
   \includegraphics[width=\textwidth]{loved_programming_languages}
   \caption{Liste der beliebtesten Programmier-, Skript- und Auszeichnungssprachen im Jahr 2022}
-  \label{fig:spa}
+  \label{fig:loved_programming_languages}
 \end{figure}
 
 \subsection{Webpack}
@@ -93,26 +93,23 @@ Es wird dafür der Stylesheet-Kernsprachen des World Wide Webs verwenden, \ac{CS
 Leider kann CSS schnell überflüssig und schwierig zu handhaben werden, wenn es darum geht, mehrere Dutzend Elemente gleichzeitig zu bearbeiten.
 Um dieses Problem zu überwinden, wurde der CSS-Präprozessor \ac{SASS} geschaffen, der die Verwendung von Variablen, Schleifen und Funktionen erlaubt, die in CSS umgesetzt werden.
 
-Die folgende Abbildung zeigt die gleiche Style-Deklaration mit CSS und SASS:
+Die folgende Abbildung zeigt die gleiche Style-Deklaration mit CSS und SASS:\\
 
-\begin{table}[H]
-  \begin{tabular}{c c}
-    CSS & SASS \\
-    \begin{lstlisting}[language=css]
-  ul {
-    background-color: red;
-  }
+\begin{lstlisting}[language=css,caption={Beispiel für die Gestaltung einer Liste mit css},captionpos=b]
+ul {
+  background-color: red;
+}
 
-  ul.hide {
-    opacity: 0;
-  }
+ul.hide {
+  opacity: 0;
+}
 
-  ul.hide li {
-    text-decoration: underline;
-  }
-      \end{lstlisting}
-        &
-    \begin{lstlisting}[language=css]
+ul.hide li {
+  text-decoration: underline;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=css,caption={Beispiel für die Gestaltung einer Liste mit scss},captionpos=b]
   ul {
     background-color: red;
 
@@ -124,10 +121,8 @@ Die folgende Abbildung zeigt die gleiche Style-Deklaration mit CSS und SASS:
       }
     }
   }
-            \end{lstlisting}
-  \end{tabular}
-  \caption{Beispiel für die Deklaration von Styles in CSS und SASS }
-\end{table}
+\end{lstlisting}
+
 
 Es wurde daher beschlossen, diesen css-Prozessor im Projekt zu verwenden. Außerdem bietet Angular eine bereits fertige Sass-Kompilation an.
 
@@ -137,3 +132,6 @@ Der Antrag wird also von einer einzigen Seite generiert, was aber nicht bedeutet
 Tatsächlich kann eine SPA dank Javascript auf verschiedenen URLs laufen.
 Angular bringt ein eigenes Routing-System namens Angular Routing\footnote{https://angular.io/guide/routing-overview} mit, das es ermöglicht, bestimmte Komponenten auf der Grundlage der URL anzuzeigen. Das Projekt wird diese Lösung verwenden, um das Routing der Anwendung zu verwalten.
 
+\subsection{Design System (PrimeNG)}
+
+% [TODO]: implement
