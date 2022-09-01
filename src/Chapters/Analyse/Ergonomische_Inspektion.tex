@@ -165,7 +165,7 @@ Wenn jedoch keine Skalierung der Daten vorgenommen wird, wird es für einen Nutz
   \label{fig:app_area_mesure_bad}
 \end{figure}
 
-Das Unterkriterium Brevity / Minimal Actions weist auf ein allgemeines Problem der Silvanet-Anwendung hin, nämlich den Mangel an eindeutigen URL-Zugriffen auf einen Teil der Anwendung.
+Das Unterkriterium \textit{Brevity / Minimal} Actions weist auf ein allgemeines Problem der Silvanet-Anwendung hin, nämlich den Mangel an eindeutigen URL-Zugriffen auf einen Teil der Anwendung.
 Die Anwendung erfolgt hauptsächlich durch das Öffnen und Schließen von Popups mittels Knopfdruck.
 In vielen Szenarien muss der Nutzer daher mehrere Klicks ausführen, um zum Stadion zurückzukehren, z. B. vor einer Seitenaktualisierung.
 Mit diesem Mangel lässt die Anwendung dem Nutzer nicht viel Freiheit, einfach einen bestimmten Teil der Anwendung zu teilen.
@@ -179,4 +179,25 @@ Mit diesem Mangel lässt die Anwendung dem Nutzer nicht viel Freiheit, einfach e
 
 Eines der markantesten Beispiele ist die Seite mit den Details einer \textit{Site}, die in einem Popup geöffnet wird.
 Ein Nutzer kann diese Details nicht direkt mit einem anderen Nutzer teilen, da es keinen Link zum Öffnen des Popups gibt.
+
+
+\subsection{Explicit Control}
+
+Einer der wichtigsten Aspekte der Silvanet-Anwendung, wenn es um das Kriterium \textit{Explicit Control} geht, sind die Aktionen in Popups.
+Wenn ein Popup vom Benutzer geschlossen wird und sich darin ein Formular befindet, wird das Formular so gesendet, als ob es vom Benutzer bestätigt worden wäre.
+Dies ist in den Augen eines Benutzers sehr verwirrend, denn eine Schnittstelle sollte ``immer einen Benutzer auffordern, eine explizite ENTER-Aktion durchzuführen, um die Verarbeitung eingegebener Daten einzuleiten''\cite{bastienscapin}.
+
+Das Kriterium \textit{User Control} bezieht sich auf die Tatsache, dass die Benutzer immer die Kontrolle über die Systemverarbeitung haben sollten (z. B. Unterbrechen, Abbrechen, Anhalten und Fortsetzen).
+Jede mögliche Aktion eines Benutzers sollte antizipiert werden und es sollten entsprechende Optionen zur Verfügung gestellt werden.
+Die silvanet-Anwendung hat an vielen Stellen riskante Aktionen, wie z. B. das Löschen einer \textit{Site} oder das Festlegen, dass eine Waldbrandwarnung ein Fehlalarm ist.
+Obwohl diese Aktionen bereits durch einen Bestätigungsdialog geschützt sind, könnte es sinnvoll sein, die Fehlerbehandlung zu verstärken, indem man eine \textit{Vorgang abbrechen}-Aktion hinzufügt.
+Dies wird dem Benutzer ein Gefühl der Zuversicht vermitteln, wenn er die Schnittstelle manipuliert, da keine Aktion endgültig ist.
+Ein gutes Beispiel für diese Art der Rückgabeaktion ist auf der Gmail-Oberfläche mit dieser Komponente namens \textit{Toast} zu sehen, die es dem Nutzer ermöglicht, das Löschen einer E-Mail rückgängig zu machen:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7cm]{gmail_undo_toast}
+  \caption{\textit{Toast}nachricht von Gmail, mit der das Löschen einer E-Mail rückgängig gemacht werden kann}
+  \label{fig:gmail_undo_toast}
+\end{figure}
 
