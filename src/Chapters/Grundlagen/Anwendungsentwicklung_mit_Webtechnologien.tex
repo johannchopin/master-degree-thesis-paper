@@ -132,6 +132,38 @@ Der Antrag wird also von einer einzigen Seite generiert, was aber nicht bedeutet
 Tatsächlich kann eine SPA dank Javascript auf verschiedenen URLs laufen.
 Angular bringt ein eigenes Routing-System namens Angular Routing\footnote{https://angular.io/guide/routing-overview} mit, das es ermöglicht, bestimmte Komponenten auf der Grundlage der URL anzuzeigen. Das Projekt wird diese Lösung verwenden, um das Routing der Anwendung zu verwalten.
 
-\subsection{Design System (PrimeNG)}
+\subsection{Design System (PrimeNg)}
 
-% [TODO]: implement
+Eine Benutzeroberfläche besteht aus vielen kleinen Elementen, die als \ac{UI}-Komponenten bezeichnet werden.
+Diese sind oft mit Schaltflächen, Popups oder Eingabefeldern versehen, die in der gesamten Anwendung wiederverwendet werden können.
+Die Organisation einer Sammlung dieser wiederverwendbaren Komponenten, so dass ihre Verwendung durch klare Standards geleitet wird, die es ermöglichen, viele verschiedene Anwendungen zu bauen, nennt man ein \textit{Design System}\cite{guideToDesignSystems}.
+
+Zu den bekanntesten Design Systems, die wir finden können, gehören:
+
+\begin{itemize}
+  \item \href{https://atlassian.design/}{Atlassian Design System}\footnote{https://atlassian.design/}
+  \item \href{https://github.com/carbon-design-system/carbon}{Carbon}\footnote{https://github.com/carbon-design-system/carbon}: IBM’s open-source Design System
+  \item \href{https://polaris.shopify.com/}{Polaris}\footnote{https://polaris.shopify.com/}: Shopify's Design System
+\end{itemize}
+
+Dryad hat auch im Blick, ein Designsystem zu entwerfen, das an die verschiedenen zukünftigen Schnittstellen angepasst ist.
+So sind die wichtigsten Richtlinien für Ikonografie, Illustrationen und Markenimage bereits festgelegt.
+Jetzt fehlt nur noch die Sammlung von \ac{UI}-Komponenten, die diese Richtlinien anwenden.
+Da Dryad aus einem kleinen Team mit engen Deadlines bestand, war es nicht möglich, Komponenten aus dem Nichts zu entwickeln.
+Deshalb greift das Team auf eine Sammlung bereits entwickelter Komponenten zurück, die eine nahezu sofortige Entwicklung der Schnittstelle ermöglichen.
+Die Wahl fiel auf die \href{https://www.primefaces.org/primeng/}{PrimeNg}\footnote{https://www.primefaces.org/primeng/} Library, die mehr als 80 \ac{UI}-Komponenten, 200 Icons, eine große Auswahl an Templates und vor allem eine enge Kompatibilität mit dem verwendeten Framework Angular bietet.\\
+
+\begin{lstlisting}[language=html,caption={Beispiel für die Verwendung der Komponente \textit{p-paginator}, mit der eine Schnittstelle mit Paging einfach verwaltet werden kann.},captionpos=b,label=lst:primeng_paginator_code]
+<p-paginator
+  [rows]="numberOfRows"
+  [totalRecords]="totalRecords"
+  (onPageChange)="pageChange($event)"
+></p-paginator>
+\end{lstlisting}
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=9cm]{primeng_paginator}
+  \caption{Rendern auf die Schnittstelle einer \textit{p-paginator}-Komponente, wie in Abbildung \ref{lst:primeng_paginator_code} deklariert.}
+  \label{fig:primeng_paginator}
+\end{figure}
