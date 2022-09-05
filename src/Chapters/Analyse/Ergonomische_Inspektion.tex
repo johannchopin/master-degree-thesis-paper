@@ -142,12 +142,12 @@ Es gibt jedoch viele \ac{UI}-Komponenten, die einem Benutzer mitteilen, dass ein
 Eine der am besten geeigneten Komponenten für diese Art von Feedback ist das Skeleton, das einerseits den Benutzer über das Laden einer Seite oder eines Teils einer Seite benachrichtigt, andererseits aber auch die wahrgenommene Wartezeit des Benutzers verkürzt.
 Die Studie von Bill Chung in seinem \textit{Artikel Everything you need to know about skeleton screens}\cite{skeletonScreens} zeigt, dass Skeleton-Komponenten am besten gegen einen einfachen Spinner oder eine leere Seite abschneiden, was die Reduzierung der Wartezeitwahrnehmung betrifft.
 
-Das in der Silvanet-Schnittstelle verwendete Designsystem, PrimeNG, bietet eine Skeleton-Komponente out of the box und wird eine einfache Implementierungslösung für dieses Issue ermöglichen.
+Das in der Silvanet-Schnittstelle verwendete Library, PrimeNg, bietet eine Skeleton-Komponente out of the box und wird eine einfache Implementierungslösung für dieses Issue ermöglichen.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{primeng_skeletons}
-  \caption{Beispiel für \ac{UI}-Komponenten-Skeletons, die vom Designsystem PrimeNG bereitgestellt werden}
+  \caption{Beispiel für \ac{UI}-Komponenten-Skeletons, die vom Library PrimeNg bereitgestellt werden}
   \label{fig:primeng_skeletons}
 \end{figure}
 
@@ -164,4 +164,133 @@ Wenn jedoch keine Skalierung der Daten vorgenommen wird, wird es für einen Nutz
   \caption{Messung von nicht skalierten Bereichen, die die kognitive Belastung der Schnittstelle verstärken}
   \label{fig:app_area_mesure_bad}
 \end{figure}
+
+Das Unterkriterium \textit{Brevity / Minimal} Actions weist auf ein allgemeines Problem der Silvanet-Anwendung hin, nämlich den Mangel an eindeutigen URL-Zugriffen auf einen Teil der Anwendung.
+Die Anwendung erfolgt hauptsächlich durch das Öffnen und Schließen von Popups mittels Knopfdruck.
+In vielen Szenarien muss der Nutzer daher mehrere Klicks ausführen, um zum Stadion zurückzukehren, z. B. vor einer Seitenaktualisierung.
+Mit diesem Mangel lässt die Anwendung dem Nutzer nicht viel Freiheit, einfach einen bestimmten Teil der Anwendung zu teilen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{app_site_details_popup}
+  \caption{Popup, das die Details einer \textit{Site} präsentiert}
+  \label{fig:app_site_details_popup}
+\end{figure}
+
+Eines der markantesten Beispiele ist die Seite mit den Details einer \textit{Site}, die in einem Popup geöffnet wird.
+Ein Nutzer kann diese Details nicht direkt mit einem anderen Nutzer teilen, da es keinen Link zum Öffnen des Popups gibt.
+
+
+\subsection{Explicit Control}
+
+Einer der wichtigsten Aspekte der Silvanet-Anwendung, wenn es um das Kriterium \textit{Explicit Control} geht, sind die Aktionen in Popups.
+Wenn ein Popup vom Benutzer geschlossen wird und sich darin ein Formular befindet, wird das Formular so gesendet, als ob es vom Benutzer bestätigt worden wäre.
+Dies ist in den Augen eines Benutzers sehr verwirrend, denn eine Schnittstelle sollte ``immer einen Benutzer auffordern, eine explizite ENTER-Aktion durchzuführen, um die Verarbeitung eingegebener Daten einzuleiten''\cite{bastienscapin}.
+
+Das Kriterium \textit{User Control} bezieht sich auf die Tatsache, dass die Benutzer immer die Kontrolle über die Systemverarbeitung haben sollten (z. B. Unterbrechen, Abbrechen, Anhalten und Fortsetzen).
+Jede mögliche Aktion eines Benutzers sollte antizipiert werden und es sollten entsprechende Optionen zur Verfügung gestellt werden.
+Die silvanet-Anwendung hat an vielen Stellen riskante Aktionen, wie z. B. das Löschen einer \textit{Site} oder das Festlegen, dass eine Waldbrandwarnung ein Fehlalarm ist.
+Obwohl diese Aktionen bereits durch einen Bestätigungsdialog geschützt sind, könnte es sinnvoll sein, die Fehlerbehandlung zu verstärken, indem man eine \textit{Vorgang abbrechen}-Aktion hinzufügt.
+Dies wird dem Benutzer ein Gefühl der Zuversicht vermitteln, wenn er die Schnittstelle manipuliert, da keine Aktion endgültig ist.
+Ein gutes Beispiel für diese Art der Rückgabeaktion ist auf der Gmail-Oberfläche mit dieser Komponente namens \textit{Toast} zu sehen, die es dem Nutzer ermöglicht, das Löschen einer E-Mail rückgängig zu machen:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7cm]{gmail_undo_toast}
+  \caption{\textit{Toast}nachricht von Gmail, mit der das Löschen einer E-Mail rückgängig gemacht werden kann}
+  \label{fig:gmail_undo_toast}
+\end{figure}
+
+
+\subsection{Adaptability}
+
+Nach den Kriterien von Bastien und Scapin muss eine Schnittstelle, um ergonomisch zu sein, eine Anpassungsfähigkeit an den Benutzer bieten.
+Dies wird im Kriterium \textit{Flexibility} hervorgehoben, das sich in der Fähigkeit einer Schnittstelle ausdrücken lässt, sich an die Bedürfnisse eines Nutzers anzupassen.
+So wäre es relevant, dass die Schnittstelle von Silvanet ein gewisses Maß an Anpassungsmöglichkeiten bietet.
+Ein guter Kandidat wäre die Seite, auf der die verschiedenen \textit{Sites} eines Nutzers vorgestellt werden.
+Derzeit besteht diese Liste aus Card-Komponenten, die den Namen des \textit{Sites} und eine Ansicht des \textit{Sites} auf einer interaktiven Karte anzeigen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{app_sites_in_sites_list}
+  \caption{Seite mit der Liste der \textit{Sites} eines Nutzers}
+  \label{fig:app_sites_in_sites_list}
+\end{figure}
+
+Auf dieser Seite wäre es möglich, das Auffinden einer bestimmten \textit{Site} in der Liste zu erleichtern, indem man dem Benutzer die Möglichkeit gibt, Änderungen an der \ac{UI} vorzunehmen, um so die Erinnerung an die Schnittstelle zu fördern.
+Eine interessante Idee ist es, den Nutzer die Liste nach seinen Vorlieben ordnen zu lassen.
+Um das schnelle Erkennen eines Listeneintrags zu erleichtern, könnte es möglich sein, die Hintergrundfarbe der Card-Komponente zu ändern.
+Im gleichen Sinne könnte der Nutzer die interaktive Karte durch ein Bild seiner Wahl ersetzen.\\
+
+Ein interessanter Aspekt der Silvanet-Anwendung und ihre Absicht, weltweit nutzbar zu sein.
+Dryads Lösung zur Erkennung von Waldbränden sollte allen potenziellen Kunden auf der ganzen Welt angeboten werden.
+So muss die Anwendung unabhängig von der Sprache oder der Kultur des Nutzers nutzbar sein.
+Aus ergonomischer Sicht ist dies mit einer Vielzahl von Abhängigkeiten verbunden, darunter auch die der \ac{I18n} und der \ac{L10n}.
+Die Einführung dieser beiden technischen Verfahren wird als Globalisierung bezeichnet\cite{lisa}.
+
+
+\subsubsection{\ac{I18n}}
+
+Die Internationalisierung umfasst die Planungs- und Vorbereitungsphasen für ein Produkt, in denen es von vornherein für die Unterstützung globaler Märkte konzipiert wird.
+Dieser Prozess bedeutet, dass alle kulturellen Annahmen entfernt werden und alle länder- oder sprachspezifischen Inhalte außerhalb des Produkts gespeichert werden, so dass es leicht angepasst werden kann.
+Die Internationalisierung besteht in erster Linie darin, die Funktionalität eines Produkts von einer bestimmten Kultur, Sprache oder einem bestimmten Markt zu abstrahieren, damit die Unterstützung für bestimmte Märkte und Sprachen problemlos integriert werden kann.
+In der Welt der Software gibt es viele Beispiele für Designfehler bei der Internationalisierung, wie z. B. nicht übersetzte Texte in Grafiken, nicht übersetzte Screenshots der Anwendung in der Dokumentation oder Telefonnummern, die im Ausland nicht verwendet werden können.
+
+\subsubsection{\ac{L10n}}
+
+Die Lokalisierung bezieht sich auf die tatsächliche Anpassung des Produkts an einen bestimmten Markt.
+Sie umfasst die Übersetzung, die Anpassung von Grafiken, die Übernahme lokaler Währungen, die Verwendung korrekter Formulare für Daten, Adressen und Telefonnummern und viele andere Details, einschließlich der physischen Struktur von Produkten in einigen Fällen.
+Wenn diese Details in der Internationalisierungsphase nicht vorgesehen waren, müssen sie während der Lokalisierung korrigiert werden, was das Projekt zeitlich und finanziell belastet.\\
+
+Die Globalisierung kann also in einen Kreislauf zwischen \ac{I18n} und \ac{L10n} übersetzt werden, den das Team von Dryad bei der Erstellung ihrer Produkte anwenden könnte.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{globalization_cycle}
+  \caption{Darstellung des Globalisierungszyklus eines Produkts}
+  \label{fig:globalization_cycle}
+\end{figure}
+
+
+\subsection{Error Management}
+
+Wie in den Empfehlungen zum \textit{Error Management} erwähnt, ist es besser, "Fehler vor der Validierung als danach zu erkennen".
+Daher sollte die Schnittstelle erkennen und verhindern Dateneingabefehler, Befehlsfehler oder Aktionen mit zerstörerischen Folgen.
+Dies gilt insbesondere für die verschiedenen Formulare von Silvanet, wo die meisten Inputs nicht angeben, welches Format erlaubt ist, und nach dem Absenden des Formulars einen Fehler zurückgeben.
+Es soll die Benutzererfahrung verbessern, wenn Sie wissen, dass Sie in dieser Eingabe nur Zahlen eingeben dürfen, dass Leerzeichen verboten sind oder dass Kommazahlen im Format \textit{xx.xxx} geschrieben werden.\\
+
+Es wird daher empfohlen, dass die Fehlermeldungen für den Benutzer klar sind, wenn eine Aktion nicht wie erwartet verläuft.
+Die Anwendung, die sich in einem unfertigen Stadium befindet, zeigt immer wieder Fehlermeldungen an, die für den Benutzer irrelevant sind, wie \textit{Error} oder \textit{Ein Fehler ist aufgetreten}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_errors_bad}
+  \caption{Screenshot von Push-Benachrichtigungen, die nach einer Fehlbedienung an den Benutzer gesendet werden}
+  \label{fig:app_errors_bad}
+\end{figure}
+
+Es ist jedoch notwendig, eine ausgezeichnete Qualität der Fehlermeldungen anzubieten, die das Lernen der Nutzer aus den Systemen fördert, indem sie ihnen die Gründe für ihre Fehler und deren Art mitteilen und ihnen beibringen, wie sie ihre Fehler verhindern oder beheben können.
+
+\subsection{Consistency}
+
+Die Kriterien besagen, dass die \ac{UI}-Elemente einer Benutzeroberfläche von Bildschirm zu Bildschirm und von Sitzung zu Sitzung stabil und konsistent sein müssen. Unter diesen Bedingungen ist das Computersystem berechenbarer, das Lernen wird erleichtert und die Anzahl der Fehler wird reduziert.
+Ein auffälliges Beispiel für eine solche Inkohärenz findet sich jedoch in einem entscheidenden Element der Anwendung: dem Warnknopf, der bei der Entdeckung eines Waldbrandes angezeigt wird.
+Dieser zeigt dem Benutzer den Text "Fire alert", dem das rote Icon eines Sensors vorangestellt ist.
+Im gesamten Rest der Anwendung wird ein Feuer jedoch mit dem Icon einer Flamme dargestellt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_fire_alert_button}
+  \caption{Icon eines Sensors, der auf der Feueralarmtaste verwendet wird}
+  \label{fig:app_fire_alert_button}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=2cm]{app_fire_icon}
+  \caption{Icon, das in einer Stecknadel verwendet wird, um den Standort eines Feuers auf der Karte anzuzeigen}
+  \label{fig:app_fire_icon}
+\end{figure}
+
+Damit ein Benutzer einfach einen Zusammenhang zwischen einem Waldbrand und einem Icon herstellen kann, um die Benutzeroberfläche zu entlasten, muss das verwendete Icon für jede Situation einzigartig sein.\\
 
