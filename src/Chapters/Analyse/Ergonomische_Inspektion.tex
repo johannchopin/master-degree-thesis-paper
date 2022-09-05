@@ -251,3 +251,46 @@ Die Globalisierung kann also in einen Kreislauf zwischen \ac{I18n} und \ac{L10n}
   \label{fig:globalization_cycle}
 \end{figure}
 
+
+\subsection{Error Management}
+
+Wie in den Empfehlungen zum \textit{Error Management} erwähnt, ist es besser, "Fehler vor der Validierung als danach zu erkennen".
+Daher sollte die Schnittstelle erkennen und verhindern Dateneingabefehler, Befehlsfehler oder Aktionen mit zerstörerischen Folgen.
+Dies gilt insbesondere für die verschiedenen Formulare von Silvanet, wo die meisten Inputs nicht angeben, welches Format erlaubt ist, und nach dem Absenden des Formulars einen Fehler zurückgeben.
+Es soll die Benutzererfahrung verbessern, wenn Sie wissen, dass Sie in dieser Eingabe nur Zahlen eingeben dürfen, dass Leerzeichen verboten sind oder dass Kommazahlen im Format \textit{xx.xxx} geschrieben werden.\\
+
+Es wird daher empfohlen, dass die Fehlermeldungen für den Benutzer klar sind, wenn eine Aktion nicht wie erwartet verläuft.
+Die Anwendung, die sich in einem unfertigen Stadium befindet, zeigt immer wieder Fehlermeldungen an, die für den Benutzer irrelevant sind, wie \textit{Error} oder \textit{Ein Fehler ist aufgetreten}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_errors_bad}
+  \caption{Screenshot von Push-Benachrichtigungen, die nach einer Fehlbedienung an den Benutzer gesendet werden}
+  \label{fig:app_errors_bad}
+\end{figure}
+
+Es ist jedoch notwendig, eine ausgezeichnete Qualität der Fehlermeldungen anzubieten, die das Lernen der Nutzer aus den Systemen fördert, indem sie ihnen die Gründe für ihre Fehler und deren Art mitteilen und ihnen beibringen, wie sie ihre Fehler verhindern oder beheben können.
+
+\subsection{Consistency}
+
+Die Kriterien besagen, dass die \ac{UI}-Elemente einer Benutzeroberfläche von Bildschirm zu Bildschirm und von Sitzung zu Sitzung stabil und konsistent sein müssen. Unter diesen Bedingungen ist das Computersystem berechenbarer, das Lernen wird erleichtert und die Anzahl der Fehler wird reduziert.
+Ein auffälliges Beispiel für eine solche Inkohärenz findet sich jedoch in einem entscheidenden Element der Anwendung: dem Warnknopf, der bei der Entdeckung eines Waldbrandes angezeigt wird.
+Dieser zeigt dem Benutzer den Text "Fire alert", dem das rote Icon eines Sensors vorangestellt ist.
+Im gesamten Rest der Anwendung wird ein Feuer jedoch mit dem Icon einer Flamme dargestellt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_fire_alert_button}
+  \caption{Icon eines Sensors, der auf der Feueralarmtaste verwendet wird}
+  \label{fig:app_fire_alert_button}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=2cm]{app_fire_icon}
+  \caption{Icon, das in einer Stecknadel verwendet wird, um den Standort eines Feuers auf der Karte anzuzeigen}
+  \label{fig:app_fire_icon}
+\end{figure}
+
+Damit ein Benutzer einfach einen Zusammenhang zwischen einem Waldbrand und einem Icon herstellen kann, um die Benutzeroberfläche zu entlasten, muss das verwendete Icon für jede Situation einzigartig sein.\\
+
