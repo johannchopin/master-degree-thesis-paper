@@ -294,3 +294,30 @@ Im gesamten Rest der Anwendung wird ein Feuer jedoch mit dem Icon einer Flamme d
 
 Damit ein Benutzer einfach einen Zusammenhang zwischen einem Waldbrand und einem Icon herstellen kann, um die Benutzeroberfläche zu entlasten, muss das verwendete Icon für jede Situation einzigartig sein.\\
 
+Im gleichen Sinne hat die Schnittstelle Schwierigkeiten, die Konsistenz bei der Anzeige der Anzahl von Entitäten zu wahren.
+Tatsächlich ist das Design des Betrags nicht immer gleich, was dem Nutzer nicht hilft, ihn leicht als Betragswert zu identifizieren.
+Ein Beispiel ist die Differenz zwischen dem Betrag für die Geräte und dem Betrag für den Waldbrandalarm.
+Eine wird als Abzeichen dargestellt und die andere zeigt einfach den Betrag neben der Entität, die durch einen vertikalen Balken getrennt ist.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{app_fire_alert_button}
+  \caption{Darstellung eines Betrags als Badge}
+  \label{fig:app_fire_alert_button_badge}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=7cm]{app_amount_number}
+  \caption{Darstellung eines Betrags als einfache Zahl neben der betreffenden Entität}
+  \label{fig:app_amount_number}
+\end{figure}
+
+In diesem Fall sollte die \textit{UI} vereinheitlicht werden, indem eine Entscheidung darüber getroffen wird, welche Anzeige bei der Präsentation eines Betrags verwendet werden soll.
+Dies wird es dem Benutzer ermöglichen, auf einer komplexen Oberfläche die Beträge einer Entität leicht von anderen Zahlen zu unterscheiden.
+
+\subsection{Schlussfolgerungen}
+
+Die Analyse der verschiedenen Seiten der Silvanet-Schnittstelle mithilfe der ergonomischen Kriterien von Bastien und Scapin hat bereits viele Mängel aufgedeckt, die die Leistung eines Benutzers beim Verstehen, Lernen und Beherrschen des vorgeschlagenen Systems beeinträchtigen können.
+Diese Probleme wurden mithilfe von Tickets im ClickUp-Tool\footnote{\ref{sec:clickup}} in verschiedene Aufgaben aufgeteilt, die unter den verschiedenen Entwicklern aufgeteilt, nach Relevanz und Schwierigkeit der Implementierung priorisiert und schließlich im Scrum-Flow\footnote{\ref{sec:scrum}} verwendet wurden.
+Ein Teil der Aufgaben, die sich aus dieser Forschungsarbeit ergeben und die mir zugewiesen wurden, werden im Teil Konzeption\footnote{\ref{chap:konzeption}} der Thesis vorgestellt.
