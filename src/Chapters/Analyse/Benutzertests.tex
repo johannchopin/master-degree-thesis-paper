@@ -126,3 +126,55 @@ Wenn ein Nutzerproblem gut bekannt ist und bereits eine oder mehrere Verbesserun
 Die Idee dahinter ist sehr einfach: Dem Benutzer wird eine Aktion gegeben, die er auf zwei Schnittstellen ausführen muss. Am Ende des Tests wählt der Benutzer aus, welche Schnittstelle er bevorzugt hat.
 Wenn die Schnittstellen nicht entwickelt werden, reichen einfache Screenshots zum Vergleich aus.
 Dieses Vergleichsverfahren hat einen Namen, der häufiger verwendet wird: \textit{A/B-Testing}.
+
+\subsubsection{Techniken der Tester-Nutzer-Interaktion}
+
+Da ein Teil der Tests informell ist, ist es notwendig, Testmethoden zu definieren, um zu verhindern, dass die Diskussion zu sehr abschweift, und gleichzeitig so viel Feedback wie möglich zu erhalten.
+Eine einfach umzusetzende Idee und das Erhalten eines mündlichen Berichts vom Nutzer mithilfe der \ac{TA}-Technik (\textit{Lautes Denken} auf Deutsch).
+Dazu muss der Tester nur angeben, dass er mit dem Benutzer darüber sprechen möchte, was er tut, während er es tut.
+Wenn die Teilnehmer aufhören zu sprechen, was häufig vorkommt, wenn sie mit einer Aufgabe sehr beschäftigt sind, werden sie aufgefordert, das Sprechen wieder aufzunehmen.\\
+
+Auch aus Gründen des Mangels an potenziellen Nutzern in der Nähe der Büros des Unternehmens werden die Usability-Tests synchron aus der Ferne durchgeführt.
+Dies hat den großen Vorteil, dass wir Zugang zu internationalen Teilnehmern haben und ihnen die Möglichkeit bieten, in einer vertrauten Umgebung zu arbeiten, die eine mittelmäßig verzerrte Testdurchführung ermöglicht.
+Auch wenn dieser Ansatz weniger interaktiv zu sein scheint als in der Nutzerpräsenz, haben Tests gezeigt, dass die Ergebnisse mit den Ergebnissen vergleichbar sind, die mit traditionelleren Tests erzielt werden\cite{remoteUsabilityEvaluation}.
+
+\subsection{Aufbau von Usability-Tests}
+
+Nachdem wir festgelegt haben, was wir testen und wie wir es testen, ist es an der Zeit, unsere Tests und die benötigten Medien zu definieren.
+Zehn Hauptthemen ergeben sich aus der Definition des Testabdeckung:
+
+\begin{enumerate}
+  \item \textbf{Gerätefehlererkennung}: Fähigkeit des Nutzers, mithilfe der interaktiven Karte Streitigkeiten an den Sensoren eines \textit{Site} zu erkennen.
+  \item \textbf{Offline-Sensorerkennung}: Fähigkeit des Nutzers, einen Sensor zu erkennen, der offline auf der interaktiven Karte angezeigt wird.
+  \item \textbf{Erschwinglichkeit des Sicherheitsdesigns}: Fähigkeit der Schnittstelle der interaktiven Karte, dem Nutzer zu vermitteln, dass ein \textit{Site} sicher ist oder nicht.
+  \item \textbf{Karte überlagern}: Welcher Kartentyp zwischen Satellitenansicht und Planansicht am besten geeignet ist, hängt von der Lage zwischen Wald und Stadtgebiet ab.
+  \item \textbf{Erstellung von Einsatzpaketen}: Fähigkeit des Nutzers, Sensoren zu planen, die an einem \textit{Site} installiert werden sollen.
+  \item \textbf{Ausgabe des Einsatzpakets}: Fähigkeit des Benutzers, ein geplantes Sensorpaket für einen \textit{Site} zu bearbeiten.
+  \item \textbf{Ablauf des Feueralarms}: Fähigkeit des Benutzers, bei einem Waldbrand schnell einen \textit{Site} zu identifizieren.
+  \item \textbf{Notruf}: Fähigkeit des Nutzers, bei einer Warnung die zuständigen Behörden zu kontaktieren.
+  \item \textbf{Teilen von Feueralarm}: Fähigkeit des Nutzers, den Alarmstatus teilen zu wollen und zu können.
+  \item \textbf{Reaktion auf Feueralarm-E-Mails}: Reaktion und Verhalten des Nutzers auf eine E-Mail mit Waldbrandalarm.
+\end{enumerate}
+
+Diese Themen werden mit dem Nutzer in der gleichen Reihenfolge besprochen.
+Die beiden Themen \textbf{Karte überlagern} und \textbf{Reaktion auf Feueralarm-E-Mails} werden mithilfe eines A/B-Tests quantifizierend gemessen.
+Die anderen Themen werden informelle Usability-Tests sein, die die \ac{TA}-Methode verwenden und auf einfachen Aufgaben basieren, die auf der Silvanet-Schnittstelle direkt ausgeführt werden müssen.
+Die Aufgabenstellung für die verschiedenen Aufgaben lautet wie folgt:
+
+\begin{table}[H]
+  \begin{tabular}{p{0.3\linewidth} |p{0.7\linewidth}}
+    Thema                                             & Aufgabenstellung                                                                                                                                                                                                                                                                                                  \\ \hline\hline
+
+    \textbf{Gerätefehlererkennung}                    & Derzeit gibt es ein Problem mit einigen Geräten auf einer der \textit{Site}. Lokalisieren Sie sie mit Hilfe der Kartenansicht und teilen Sie mir mit, wo das Problem liegt. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig.".                                                                              \\\hline
+    \textbf{Offline-Sensorerkennung}                  & Es gibt einen \textit{Site} namens "Eberswalde B", der einen Offline-Sensor hat. Nennen Sie mir in der Standortübersicht den Namen/die Kennung des Geräts. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".                                                                                                \\\hline
+    \textbf{Erschwinglichkeit des Sicherheitsdesigns} & Wählen Sie in der Kartenansicht einen \textit{Site} Ihrer Wahl und sagen Sie mir, ob er sicher ist oder nicht und warum. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".                                                                                                                                  \\\hline
+    \textbf{Erstellung von Einsatzpaketen}            & Erstellen Sie ausgehend von der \textit{Site}ansicht ein neues Einsatzpaket für den Standort "Eberswalde Demo", das 1 \textit{Mesh-Gateway} und 2 Sensoren enthält. Platzieren Sie diese in gleichem Abstand auf der Karte, um das Paket fertigzustellen. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig". \\\hline
+    \textbf{Ausgabe des Einsatzpakets}                & Bearbeiten Sie den Namen des Pakets, das Sie gerade erstellt haben. Danach entfernen Sie es. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".                                                                                                                                                              \\\hline
+    \textbf{Ablauf des Feueralarms}                   & Es gibt einen Feueralarm in einem Ihrer \textit{Sites}. Sagen Sie laut, an welchem \textit{Site} und wo das Feuer ungefähr ausgebrochen ist. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".                                                                                                              \\\hline
+    \textbf{Notruf}                                   & Versuchen Sie, in der Brandmeldezentrale den Notdienst anzurufen. Sprechen Sie die Informationen, die Sie wahrscheinlich sagen werden, laut aus. Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".                                                                                                          \\\hline
+    \textbf{Teilen von Feueralarm}                    & Es brennt gerade und Sie wollen es mit einem Ihrer Mitarbeiter teilen. Was werden Sie tun? Wenn Sie fertig sind, sagen Sie bitte "Ich bin fertig".
+  \end{tabular}
+  \caption{Aktionen, die der Nutzer im Rahmen von Usability-Tests durchführen muss}
+\end{table}
+
+Im Anschluss an jede vom Nutzer durchgeführte Aktion sollte ihm ein \ac{SUS}-Fragebogen angeboten werden, um die empfundene Erfahrung zu quantifizieren.
