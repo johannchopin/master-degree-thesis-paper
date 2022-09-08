@@ -63,3 +63,66 @@ Diese Aktivität ermöglichte es, die Usability-Tests schließlich auf die folge
 \end{itemize}
 
 \subsection{Methoden für Usability-Tests}
+
+Nachdem der Fokus der Usability-Tests festgelegt wurde, ist es nun an der Zeit festzulegen, wie die Tests durchgeführt werden sollen, um in kurzer Zeit möglichst viel relevantes Feedback zu erhalten.
+In der von \citeauthor{usability} durchgeführten und in \citetitle{usability} erläuterten Forschung gibt es zwei Techniken, die zusammen eine gute Abdeckung der Usability einer Schnittstelle ermöglichen.
+
+\subsubsection{Qualitative Bewertung}
+
+Die erste besteht in der Entdeckung und Lösung von Usability-Problemen.
+Studien zur Problementdeckung zeichnen sich dadurch aus, dass sie sehr informell sind.
+Der Schwerpunkt liegt nicht auf der genauen Messung der Leistung oder der Haltung der Teilnehmer, sondern auf einer starken Interaktion zwischen Beobachtern und Teilnehmern.
+Die Durchführung dieser Tests ist einfach, da sie auf spezifischen Zielen zur Entdeckung eines Problems basieren, wie z. B. ``Identifizieren Sie einen Sensor an der Schnittstelle, der das Vorhandensein von Rauch detektiert''.
+Diese informellen Tests, die mehrmals mit vielen verschiedenen Nutzern wiederholt werden, ermöglichen eine umfassendere Problemerkennung, insbesondere solche, an die die Tester nicht gedacht hätten.
+Aus diesem Grund wird eine Reihe solcher Tests für freiwillige Nutzer angeboten.
+
+\subsubsection{Quantitative Bewertung}
+
+Die zweite Methode wird auf einer quantitativen Bewertung der Schnittstelle basieren, die es ermöglicht, eine Usability-Skala zu erhalten, mit der man einfach die Entwicklung der Schnittstelle im Vergleich zur vorherigen Version vergleichen kann, indem man einfach die Bewertungen vergleicht.
+Eine weit verbreitete Technik der quantitativen Bewertung basiert auf dem Maß der percuted utilisability, kurz \ac{SUS} genannt\cite{usability}.
+\ac{SUS} ist ein standardisierter Fragebogen, der 10 Fünf-Punkte-Items mit abwechselnd positiver und negativer Tonalität enthält. Die Inhalte der Items sind wie folgt:
+
+\begin{enumerate}
+  \item I think that I would like to use this system frequently.
+  \item I found the system unnecessarily complex.
+  \item I thought the system was easy to use.
+  \item I think that I would need the support of a technical person to be able to use this system.
+  \item I found the various functions in this system were well integrated.
+  \item I thought there was too much inconsistency in this system.
+  \item I would imagine that most people would learn to use this system very quickly.
+  \item I found the system very awkward to use.
+  \item I felt very confident using the system.
+  \item I needed to learn a lot of things before I could get going with this system.
+\end{enumerate}
+
+Für jeden Punkt muss der Nutzer dann eine Bewertung zwischen \textbf{1} und \textbf{5} abgeben, wobei \textbf{1} für \textit{Stimmt überhaupt nicht zu} und \textbf{5} für \textit{Stimme voll und ganz zu} steht. Wenn der Nutzer kein Urteil hat, kann er die Note \textbf{3} geben, die neutral ist.
+Wenn Sie fertig sind, können Sie die Gesamtpunktzahl anhand der Punktzahl jedes Items berechnen, die auf eine Skala zwischen 0 und 4 gebracht wird.
+Bei positiv formulierten Items (1, 3, 5, 7 und 9) ist der Beitrag zur Punktzahl die Position auf der Skala minus 1.
+Bei negativ formulierten Items (2, 4, 6, 8 und 10) ist der Beitrag zur Punktzahl gleich 5 minus der Position auf der Skala.
+Um die Gesamtpunktzahl des SUS zu erhalten, muss die Summe der Punktzahlen der einzelnen Items mit 2,5 multipliziert werden.
+So reichen die SUS-Scores von 0 bis 100 in Schritten von 2,5 Punkten.\\
+
+Schließlich kann die Punktzahl einer Schnittstelle mithilfe der folgenden Skala adjektiviert werden:
+
+\begin{itemize}
+  \item (score <= 25): Unvorstellbar schlecht
+  \item (25 < score <= 51,7): Schlecht
+  \item (51,7 < score <= 71,7): Fair
+  \item (71,7 < score <= 80,7): Gut
+  \item (80,7 < score <= 84,1): Ausgezeichnet
+  \item (84,1 < score): Das Beste, was man sich vorstellen kann
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{sus_scala}
+  \caption{Noten, Adjektive, Akzeptanz und NPS-Kategorien in Verbindung mit den SUS-Rohwerten\cite{sus_scala}}
+  \label{fig:sus_scala}
+\end{figure}
+
+\subsubsection{Bewertung durch Vergleich}
+
+Wenn ein Nutzerproblem gut bekannt ist und bereits eine oder mehrere Verbesserungsideen vorgeschlagen wurden, ist es sinnvoll, die relevanteste mithilfe eines Vergleichstests zu bewerten.
+Die Idee dahinter ist sehr einfach: Dem Benutzer wird eine Aktion gegeben, die er auf zwei Schnittstellen ausführen muss. Am Ende des Tests wählt der Benutzer aus, welche Schnittstelle er bevorzugt hat.
+Wenn die Schnittstellen nicht entwickelt werden, reichen einfache Screenshots zum Vergleich aus.
+Dieses Vergleichsverfahren hat einen Namen, der häufiger verwendet wird: \textit{A/B-Testing}.
