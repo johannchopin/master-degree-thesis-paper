@@ -178,3 +178,92 @@ Die Aufgabenstellung für die verschiedenen Aufgaben lautet wie folgt:
 \end{table}
 
 Im Anschluss an jede vom Nutzer durchgeführte Aktion sollte ihm ein \ac{SUS}-Fragebogen angeboten werden, um die empfundene Erfahrung zu quantifizieren.
+
+\subsection{Ablauf der Usability-Tests}
+
+Die Benutzertests werden im Remote-Modus durchgeführt, bei dem der Bildschirm des Benutzers geteilt wird, um seine Bewegung zu verfolgen.
+Das Online-Videoanruftool \href{https://meet.google.com/}{Google Meet}\footnote{https://meet.google.com/} wird aus folgenden Gründen dafür verwendet:
+
+\begin{enumerate}
+  \item Out-of-the-Box-Webanwendung, die keine besondere Installation erfordert
+  \item Verfügbare Dienste in den Regionen der Welt, auf die sich die Suche bezieht
+  \item Kostenlose Lösung
+\end{enumerate}
+
+Die verschiedenen Anleitungen zur Durchführung von Usability-Tests und das dazugehörige \ac{SUS}-Formular werden dem Nutzer in Form eines Online-Fragebogens präsentiert, der mit dem Tool \href{https://www.google.com/forms/about/}{Google Form}\footnote{https://www.google.com/forms/about/}  erstellt wurde.
+Die A/B-Tests werden dem Nutzer auch in der Google Form präsentiert.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{survey_question}
+  \caption{Beispiel einer Frage aus dem Formular für die Usability-Forschung, das dem Benutzer vorgelegt wird}
+  \label{fig:survey_question}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{survey_ab_testing}
+  \caption{Beispiel eines A/B-Vergleichs des Formulars für die Untersuchung der Usability, die dem Benutzer präsentiert wird}
+  \label{fig:survey_ab_testing}
+\end{figure}
+
+Der Nutzer wird gefragt, ob er die Frage und die Aufgabe richtig verstanden hat, und muss dann die Aufgabe ausführen, während er die durchgeführten Aktionen mündlich erläutert.
+Es werden Notizen über die Interaktion des Nutzers mit der Schnittstelle mittels Videoübertragung seines Bildschirms und über die mündlichen Erklärungen des Nutzers gemacht.
+Wenn der Nutzer eine Frage oder Anmerkung hat, dann kann eine offene Diskussion gestartet werden, um ungeplantes Feedback zu erhalten.
+Da die technische Leistung der Schnittstelle nicht quantifiziert wird, müssen die Benutzeraktionen für diese Tests nicht zeitlich festgelegt werden.\\
+
+Nach einer Reihe von Pilottests, die mit drei Mitgliedern des Cloud-Teams von Dryad durchgeführt wurden, um Inkonsistenzen, Ungenauigkeiten oder Sprachfehler im Test und im Formular zu identifizieren, war es an der Zeit, den Usability-Test mit einem echten Benutzer durchzuführen.
+Da Dryad noch ein junges Startup ist, ist die Anzahl der Kunden begrenzt und die, die bereit sind, sich eine Stunde Zeit zu nehmen, um an den Tests teilzunehmen, noch weniger.
+Glücklicherweise war ein Kunde aus Südkorea bereit, bei dem Versuch, die Qualität des Produkts zu verbessern, zu helfen, indem er die Einladung zum Test annahm.
+
+\subsection{Ergebnis der Benutzertests}
+
+Letztendlich konnte nur ein Nutzer den Usability-Test vollständig bestehen.
+Dies ist für ein relevantes und unvoreingenommenes Feedback wirklich zu vernachlässigen, aber leider war es nicht möglich, in der vorgegebenen Zeit mehr Kandidaten zu bekommen.
+Die Testergebnisse bleiben dennoch sehr interessant.
+Hier sind die \ac{SUS}-Bewertungen für die verschiedenen Themen, die für diesen Benutzer gesammelt wurden.
+
+\begin{table}[H]
+  \begin{tabular}{p{0.4\linewidth} |p{0.3\linewidth}|p{0.3\linewidth}}
+    Thema                                             & \ac{SUS}-Bewertungen & Entsprechendes Adjektiv                 \\ \hline\hline
+
+    \textbf{Gerätefehlererkennung}                    & 35                   & Schlecht                                \\\hline
+    \textbf{Offline-Sensorerkennung}                  & 55                   & Schlecht                                \\\hline
+    \textbf{Erschwinglichkeit des Sicherheitsdesigns} & 40                   & Schlecht                                \\\hline
+    \textbf{Erstellung von Einsatzpaketen}            & 90                   & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Ausgabe des Einsatzpakets}                & 65                   & Fair                                    \\\hline
+    \textbf{Ablauf des Feueralarms}                   & 95                   & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Notruf}                                   & 97.5                 & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Teilen von Feueralarm}                    & 67.5                 & Fair
+  \end{tabular}
+  \caption{Ergebnisse der SUS-Bewertungen nach Themenbereichen der Fragen.}
+\end{table}
+
+Diese Ergebnisse und das mündliche Feedback der Nutzer zeigen sehr deutlich, dass die Schnittstelle im Allgemeinen \textit{Fair} ist, außer bei den Punkten, die die interaktiven Karten betreffen, die alle als \textit{Schlecht} bezeichnet werden.
+Diese Beobachtung ist für die Dryad-Teams keineswegs eine neue Erkenntnis, da sie die mangelnde Nutzbarkeit interaktiver Karten ebenso anerkennen.
+Die Mehrheit der Probleme mit der interaktiven Karte wurden von den Nutzern wie folgt klar benannt.
+
+\begin{enumerate}
+  \item Unmöglichkeit, auf einer Gesamtansicht zu einer \textit{Site} zu navigieren
+  \item Unverständnis, wenn beim Zoomen in eine \textit{Site} die Sensoren nicht angezeigt werden und nichts passiert.
+  \item Die vielen verschiedenen Farben der Marker erschweren die Schlussfolgerung
+  \item Unmöglichkeit, schnell zu erkennen, ob eine \textit{Site} ein Problem hat oder nicht
+\end{enumerate}
+
+A/B-Tests waren auch interessant, mündlich mit dem Nutzer direkt zu analysieren.
+Die interaktiven Karten mit Satellitenansicht sind sogar in städtischen Gebieten besser geeignet als die mit Kartenansicht.
+Der Nutzer erklärt, dass er häufiger die Satellitenansicht der Google Map-Anwendung nutzt, was die Erfahrung vertrauter macht.
+Auch die Satellitenansicht ermöglicht es, die Bilder des Waldes sehr genau zu sehen.
+
+Der andere A/B-Test war ebenfalls interessant. Ein Vorschlag für ein neues E-Mail-Design mit weniger Rohdaten und nur einem Link zur Warnseite der Anwendung wurde mit der aktuellen Version verglichen.
+Der Nutzer fühlte sich sicherer, wenn er die E-Mail mit mehr Daten erhielt, da er so schneller und einfacher mit den Medien teilen konnte, die er gewöhnlich benutzt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{survey_ab_mail}
+  \caption{Vergleich zweier E-Mail-Designs, die den Nutzer über die Entdeckung eines Waldbrandes durch das Silvanet-System benachrichtigen.}
+  \label{fig:survey_ab_mail}
+\end{figure}
+
+Zusammenfassend lässt sich sagen, dass diese Benutzertests die Annahme bestätigten, dass interaktive Karten schwer zu verwenden sind, dass der Benutzer sich den Daten nahe fühlen möchte und dass das Hauptfeature der Waldbranderkennung und -verwaltung in Bezug auf die Kontaktaufnahme mit den lokalen Entscheidungsträgern nutzbar ist.
+
