@@ -92,3 +92,86 @@ In dieser Situation kann ein Kollaps-System verwendet werden.
   \end{tabular}
   \caption{Menü in der Sidebar, das ein Kollaps-Design implementiert}
 \end{table}
+
+Ein weiterer nicht zu vernachlässigender Aspekt der Schnittstelle bleibt, dem Benutzer zu zeigen, wo er sich in der Hierarchie der Anwendung befindet.
+Ein UI-Element, das so alt ist wie das Web selbst, ist immer noch führend in diesem Bereich, da es dem Nutzer ermöglicht, mit einem Klick auf die oberen Ebenen der Website zu gelangen, wenig Platz auf der Benutzeroberfläche einnimmt und als sekundäres Navigationsmittel dient: die Breadcrumb \cite{breadcrumb}.
+Breadcrumbs sind eine Liste von Links, die die aktuelle Seite und ihre "Vorgänger" (übergeordnete Seite, Großelternseite usw.) darstellen und in der Regel bis zur Startseite der Website zurückreichen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm]{primeng_breadcrumb}
+  \caption{Beispiel einer breadcrumb-Komponente, die von der PrimeNg-Bibliothek \ref{sec:primeng} gerendert wurde}
+  \label{fig:primeng_breadcrumb}
+\end{figure}
+
+Die Schnittstelle muss eine generische Logik implementieren, die es ermöglicht, dem Benutzer auf jeder verfügbaren Seite eine Breadcrumb-Komponente anzuzeigen.
+Diese muss so gestaltet sein, dass das Hinzufügen von Seiten nicht dazu führt, dass der Code, der mit der Breadcrumb-Komponente verknüpft ist, in irgendeiner Weise manipuliert werden muss.
+
+\subsection{Hierarchie der Anwendung}
+
+Mit der breadcrumb-Komponente können Sie die Tiefenstruktur einer Seite anzeigen.
+Allerdings muss die Anwendung als Ganzes eine Tiefenstruktur aufweisen, damit Sie Seiten leicht in Gruppen zusammenfassen können.
+Wenn man sich die Sitemap ansieht, erkennt man eine sehr flache Hierarchie, die die Navigation auf der Seite sehr kompliziert macht.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=12cm]{site_map}
+  \caption{Schematische Darstellung der Sitemap, die alle zugänglichen Seiten und ihre Vorgänger zeigt}
+  \label{fig:site_map}
+\end{figure}
+
+Das Routing der Dryad-Anwendung muss daher neu bewertet werden, um eine Downlink-Architektur zu bieten.
+Ein sinnvoller Ansatz für diese Aufgabe ist es, sich auf eine starke URL-Hierarchie-Konvention wie das berühmte \ac{REST} zu stützen.
+
+\subsubsection{REST-Konvention der URIs}
+
+Die REST-Konvention ermöglicht eine primäre und standardisierte Darstellung der verschiedenen Daten, die als Ressource bezeichnet werden.
+Die Einführung einer einheitlichen und robusten Strategie zur Benennung von REST-Ressourcen wird sich als eine der besten langfristigen Designentscheidungen erweisen.
+In REST kann eine Ressource das sein, was als Singleton oder Sammlung bezeichnet wird.
+Zum Beispiel ist die Ressource \lstinline{users} eine Sammlung und die Ressource \lstinline{user} ist ein Singleton.
+In diesem Fall kann auf die Sammlung mit dem \ac{URI} \lstinline{/users} und auf das Singleton anhand seiner Kennung mit dem \ac{URI} \lstinline{/users/:userId} zugegriffen werden.
+Dies gilt in gleicher Weise für Untersammlungen wie z. B. ein Singleton \lstinline{article} eines \lstinline{user}.
+Dieser wird über \lstinline{/users/:userId/articles/:articleId} erreichbar, wobei das Zeichen \lstinline{/} eine hierarchische Beziehung anzeigt.
+
+Die REST-Konvention legt außerdem die folgenden Regeln fest:
+
+\begin{itemize}
+  \item Der Name einer Ressource muss immer im Plural stehen.
+  \item Wenn der Name einer Sammlung aus mehreren Wörtern besteht, müssen diese durch einen Bindestrich getrennt werden.
+  \item Der \ac{URI} muss in Kleinbuchstaben definiert werden.
+\end{itemize}
+
+\subsubsection{Anwenden der REST-Konvention auf die Anwendung}
+
+In der vorliegenden Form ermöglicht es die REST-Konvention praktisch, das Routing aller unserer Seiten auf strukturierte Weise zu erstellen.
+Dies ist der Fall bei Seiten, die eine Sammlung oder ein Singleton anzeigen wollen, aber bei sogenannten Aktionsseiten muss noch einiges getan werden.
+In der reinen REST-Konvention werden Aktionen direkt durch die \ac{HTTP}-Verben POST, DELETE, PUT definiert, da die Konvention mit dem Ziel entwickelt wurde, Webdienste über \ac{HTTP} zu erstellen.
+Diese Verben sind für das Routing einer Webanwendung nicht verwendbar, also muss eine Alternative gefunden werden.
+Die Strategie besteht darin, diese Verben einfach auszudrücken, indem man einen URI an den URI der betreffenden Ressource oder des betreffenden Singletons anhängt.
+Dieser \ac{URI} wird ein englisches Wort sein, das die Aktion so präzisiert, dass ein Nutzer sie verstehen kann.
+Um Aktions-\ac{URI}s von Ressourcen oder Singletons zu unterscheiden, wird ihnen ein Underscore vorangestellt.
+Die Seite, auf der Sie einen neuen Benutzer anlegen können, hat z. B. den \ac{URI} \lstinline{/users/_create}.
+
+\begin{table}[H]
+  \begin{tabular}{p{0.5\linewidth} |p{0.5\linewidth}}
+    HTTP-Verben     & Entsprechender URI               \\ \hline\hline
+
+    \textbf{POST}   & \textbf{/\textunderscore create} \\\hline
+    \textbf{PUT}    & \textbf{/\textunderscore edit}   \\\hline
+    \textbf{DELETE} & \textbf{/\textunderscore delete}
+  \end{tabular}
+  \caption{Anpassung der \ac{HTTP}-Verben der \ac{REST}-Konvention für die Verwendung im Routing der Schnittstelle}
+\end{table}
+
+Mit der Umsetzung all dieser Regeln ist es schließlich möglich, eine standardisierte Architektur der Anwendung zu definieren:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{site_map_v2}
+  \caption{Schematische Darstellung der Sitemap nach einer Normalisierung mit der angepassten Konvention von \ac{REST}}
+  \label{fig:site_map_v2}
+\end{figure}
+
+So kann man direkt die Relevanz dieser Normierung erkennen, die es ermöglicht, eine flache Hierarchie in eine tiefere und organisiertere Baumstruktur zu verwandeln.
+Dies hat auch den Vorteil, dass der Nutzer ganz einfach ganz bestimmte Seiten der Anwendung teilen kann.
+Es würde zu lange dauern, die gesamte Hierarchie der aktuellen Anwendung zu refaktorisieren, daher wird sich die Thesis nur mit der Sammlung \lstinline{/sites} und ihren Nachkommen beschäftigen.
