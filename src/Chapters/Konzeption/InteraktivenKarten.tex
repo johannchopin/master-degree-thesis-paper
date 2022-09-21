@@ -34,11 +34,80 @@ Es gibt jedoch ein Konzept für die Interaktion von Punkten, das in den meisten 
 Die Idee dahinter ist sehr einfach: Wenn sich zwei oder mehr Punkte beim Zoomen überlappen, werden sie in einem neuen Punktdesign zusammengefasst, um die Anzahl der eingeschlossenen Punkte zu schätzen.
 Auf die gleiche Weise werden beim Zoomen die nicht mehr überlappenden Punkte aus dem Cluster herausgeschleudert und wieder zu Originalpunkten.
 
-// TODO
+Es wäre denkbar, die verschiedenen Sensoren einfach untereinander zu clustern. Dies ist recht einfach, da das Clustering von Punkten bereits out-of-the-box mit der Google Maps API möglich ist \footnote{\href{https://developers.google.com/maps/documentation/javascript/marker-clustering}{https://developers.google.com/maps/documentation/javascript/marker-clustering}}, der Plattform für interaktive Karten, die in der Dryad-Anwendung verwendet wird.
+Leider könnten bei diesem Ansatz die Sensoren von zwei verschiedenen Standorten in einem Cluster zusammengefasst werden. Es ist jedoch wichtig, dass der Benutzer zwischen den verschiedenen \textit{Sites} unterscheiden kann.
+Daher ist es für diese Anforderung notwendig, eine zweistufige Clustering-Logik zu implementieren.
+Zunächst müssen die verschiedenen Standorte geclustert werden, um einen einfachen Zugriff auf einen bestimmten Standort zu ermöglichen.
+Wenn ein bestimmter Standort auf der Karte sichtbar ist, müssen die Sensoren, aus denen er besteht, angezeigt werden.
+Zu diesem Zeitpunkt wird ein Clustering der Sensoren durchgeführt.
+Wenn sich alle Sensoren zu einem Punkt zusammenschließen, wird eine einfache Markierung des Standorts angezeigt.
+Im umgekehrten Fall werden die Cluster der Sensoren und die Punkte der einzelnen Sensoren auf der Karte angezeigt.
+
+Diese Logik lässt sich mit dem folgenden Flow Diagram zusammenfassen:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{map_clustering_flow}
+  \caption{Flow-Diagram-Darstellung des zweistufigen Clusterings von \textit{Sites} und Sensoren auf einer interaktiven Karte (Englisch)}
+  \label{fig:map_clustering_flow}
+\end{figure}
+
+\subsection{Darstellung der Cluster und Marker}
+
+Die aktuelle Karte besteht aus acht verschiedenen Markierungen, die die verschiedenen Arten und den Status der Geräte anzeigen:
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=13cm]{map_clustering_flow}
-  \caption{}
-  \label{fig:map_clustering_flow}
+  \includegraphics[width=10cm]{devices_markers}
+  \caption{Marker in Form einer Reißzwecke, die den Standort eines Geräts anzeigen}
+  \label{fig:devices_markers}
 \end{figure}
+
+Jeweils von links nach rechts stellen sie dar:
+
+\begin{enumerate}
+  \item Sensor, der ein Feuer erkennt
+  \item Sensor, der offline ist
+  \item Sensor mit niedrigem Batteriestand
+  \item Sensor, der seine letzte Nachricht vor mehr als 12 Stunden gesendet hat
+  \item Sensor, der seine letzte Nachricht vor mehr als 6 Stunden gesendet hat
+  \item Aktiver Sensor
+  \item Mesh-Gateway
+  \item Border-Gateway
+\end{enumerate}
+
+Sechs verschiedene Markierungen zu haben, um denselben Gerätetyp anzuzeigen, ist viel zu viel und macht die Verwendung verschiedener Farben weniger relevant.
+Es wird empfohlen, eine Palette von maximal fünf Farben zu verwenden \cite{likeChameleon}, damit der Nutzer sie einfach unterscheiden und sich ihre Bedeutung merken kann.
+So müssen nur vier Farben verwendet werden, um die verschiedenen Zustände eines Sensors darzustellen.
+Dies wird erreicht, indem die Marker 3, 4 und 5 der vorherigen  Liste zu einem einzigen Marker mit der gleichen gelben Farbe wie Marker 5 kombiniert werden.
+Dies ist darauf zurückzuführen, dass der Grundstatus hauptsächlich durch eine schlechte Sonneneinstrahlung auf die Solarpaneele oder eine schlechte Abdeckung der LoRa-Verbindung verursacht wurde.
+Diese beiden Probleme können direkt vom Kunden behoben werden, indem er einfach einen Sensor neu ausrichtet oder ein Verbindungsrelais hinzufügt.
+So wird der neue Status eines Sensors die \textit{Notwendigkeit einer Wartung} anzeigen.\\
+
+Die Karte zeigt nun genau die verschiedenen Geräte eines, aber auch die Position der Cluster von Geräten und \textit{Sites} sowie die Lokalisierung eines einzelnen \textit{Site} müssen dargestellt werden.
+In den meisten interaktiven Karten sind Cluster an einem runden Icon zu erkennen, das die Anzahl der enthaltenen Elemente anzeigt und von einem ähnlich gefärbten, aber weniger undurchsichtigen Halo umgeben ist.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=14cm]{google_maps_clusters}
+  \caption{Design der Cluster standardmäßig vorhanden auf dem Produkt Google Maps}
+  \label{fig:google_maps_clusters}
+\end{figure}
+
+Um den Karten von Dryad eine persönliche Note zu verleihen, werden die verschiedenen Cluster durch ein Sechseck dargestellt, das an das Logo des Startups erinnert:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{clusters_markers}
+  \caption{Prototyping von Clustermarkern, die in Version 2 der interaktiven Karten verwendet werden}
+  \label{fig:clusters_markers}
+\end{figure}
+
+Diese Marker repräsentieren jeweils von links nach rechts:
+
+\begin{enumerate}
+  \item Cluster von \textit{Sites}, der einen \textit{Site} enthält, der ein Feuer detektiert
+  \item Cluster von \textit{Sites}, der einen \textit{Site} mit einem Offline-Sensor enthält
+  \item Cluster von \textit{Sites}, der einen \textit{Site} mit einem wartungsbedürftigen Sensor enthält
+  \item Cluster von Standorten
+  \item Cluster von Sensoren. Diese Art von Cluster hat die gleichen Farbvariationen wie die \textit{Sites}-Cluster
+\end{enumerate}
