@@ -143,3 +143,77 @@ Beachten Sie auch, dass eine Markierung mit einer höheren Priorität vor einer 
   \label{fig:map_markers_size}
 \end{figure}
 
+
+\subsection{Hilfe beim Lesen der Karte}
+
+Die Anzeige verschiedener Markierungen ermöglicht bereits eine gute Erkundung eines Ortes und seiner verschiedenen Sensoren.
+Es muss noch sichergestellt werden, dass weitere nützliche Hinweise vorhanden sind, die dem Nutzer das Lesen der Karte erleichtern.
+Dies gilt insbesondere für die Darstellung eines Standorts, eines Feuers und auch für Informationen, die in einem Cluster zusammengefasst sind.
+
+Ein Standort wird in Form eines Clustermarkers dargestellt.
+Um das Auffinden eines bestimmten \textit{Site} auf einer Karte zu erleichtern, wird der Name des \textit{Site} in einem Popup über dem Marker angezeigt, wenn sich die Maus des Nutzers über dem Marker befindet.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{map_site_name_window}
+  \caption{Popup, das den Namen der \textit{Site} angibt, die von der Maus des Nutzers angehoben wird}
+  \label{fig:map_site_name_window}
+\end{figure}
+
+Wenn die verschiedenen Geräte einer \textit{Site} in mindestens zwei verschiedenen Clustern angezeigt werden können, verschwindet die Markierung der \textit{Site} und es werden nur noch die Cluster der Geräte angezeigt.
+Es ist notwendig, dem Nutzer klar anzuzeigen, zu welcher \textit{Site} diese Geräte gehören.
+Um dies zu erreichen, werden die Apparate in einen Bereich eingebettet, der je nach Status der \textit{Site} farbig ist.
+Das Popup mit dem Namen der \textit{Site} wird auch sichtbar, wenn der Nutzer mit der Maus über diesen Bereich fährt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=4cm]{map_site_with_zone}
+  \caption{Darstellung eines \textit{Site} mit seinem Abdeckungsbereich}
+  \label{fig:map_site_with_zone}
+\end{figure}
+
+Es ist auch wichtig, jetzt zu definieren, was der Status einer \textit{Site} ist.
+Jeder Sensor auf einer \textit{Site} hat einen Status, der Feuer, Offline, Wartung oder Default (nichts zu melden) sein kann.
+Ein \textit{Site} oder Sensors-cluster kann Sensoren enthalten, die unterschiedliche Status haben.
+Es ist daher notwendig, jedem Status eine Priorität zuzuweisen, um dem Nutzer die relevantesten Informationen anzuzeigen.
+So ist es z.B. besser, einen Standort auf der Karte als brennend anzuzeigen, als die Tatsache, dass einer der Sensoren, die ihn bilden, offline ist.
+
+\begin{table}[H]
+  \begin{tabular}{p{0.3\linewidth}|p{0.4\linewidth}}
+    \centering
+    Status     & Priorität (1: niedrig; 4: hoch) \\ \hline\hline
+
+    in Brand   & 4                               \\\hline
+    offline    & 3                               \\\hline
+    in Wartung & 2                               \\\hline
+    Standard   & 1
+  \end{tabular}
+  \caption{Festlegung der Prioritäten der Status von Sensoren, \textit{Sites} und Clustern}
+\end{table}
+
+So hat ein \textit{Site} oder ein Cluster von Sensoren oder ein Cluster von \textit{Sites} den Status (und damit konkret die Farbe) des Sensors mit dem stärksten Status.
+Auf diese Weise zeigt ein Cluster nicht alle Informationen der Sensoren an, aus denen er besteht.
+Um zu vermeiden, dass der Nutzer die Karte vergrößern muss, um den Status der einzelnen Sensoren zu überprüfen, wird beim Überfahren des Clusters mit der Maus ein Popup mit der Statusverteilung der einzelnen Sensoren eingeblendet.
+Diese sollte die Namen der nach Status gruppierten Sensoren sowie einen Balken mit der Verteilung dieser Status anzeigen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{map_sensors_window_collapsed}
+  \caption{Detailansicht der Sensoren, aus denen ein Cluster besteht}
+  \label{fig:map_sensors_window_collapsed}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{map_sensors_window}
+  \caption{Detailansicht der Sensoren mit erweiterter Ansicht, die einen Cluster bilden}
+  \label{fig:map_sensors_window}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=5cm]{map_sites_window}
+  \caption{Details zu den \textit{Sites}, aus denen ein Cluster besteht}
+  \label{fig:map_sites_window}
+\end{figure}
+
+Der stärkste Status ist das Vorhandensein eines Feuers.
+Um seine Sichtbarkeit und Erkennung zu verstärken, wird ein Marker eines Sensors mit dem Status \textit{in Feuer} eine Bounce-Animation haben.
