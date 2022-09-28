@@ -111,3 +111,35 @@ Diese Marker repräsentieren jeweils von links nach rechts:
   \item Cluster von Standorten
   \item Cluster von Sensoren. Diese Art von Cluster hat die gleichen Farbvariationen wie die \textit{Sites}-Cluster
 \end{enumerate}
+
+Die verschiedenen Marker, die Sie verwenden können, sind nun festgelegt.
+Um ihr Aussehen entsprechend ihrer Priorität zu verstärken, können Sie die Größe der einzelnen Marker beeinflussen.
+So wurde eine Prioritätsskala der Marker und ihrer relativen Größe wie folgt erstellt:
+
+\begin{table}[H]
+  \begin{tabular}{p{0.6\linewidth} |p{0.2\linewidth}|p{0.2\linewidth}}
+    Markern                                                & Priorität (1: niedrig; 6: hoch) & Relative Größe \\ \hline\hline
+
+    Cluster eines \textit{Site}                            & \textbf{6}                      & x1.11          \\\hline
+    Marker einer \textit{Site}                             & \textbf{5}                      & x1             \\\hline
+    Cluster von Sensoren in Feuer, offline oder in Wartung & \textbf{4}                      & x0.89          \\\hline
+    Cluster von Sensoren                                   & \textbf{2}                      & x0.73          \\\hline
+    Marker für einen brennenden Sensor                     & \textbf{4}                      & x0.89          \\\hline
+    Marker eines Offline-Sensors                           & \textbf{3}                      & x0.78          \\\hline
+    Marker eines Sensors in Wartung                        & \textbf{2}                      & x0.73          \\\hline
+    Marker eines Sensors                                   & \textbf{1}                      & x0.55          \\\hline
+    Marker eines Border-Gateways                           & \textbf{3}                      & x0.78
+  \end{tabular}
+  \caption{Festlegung der Prioritäten und Größen der Marker}
+\end{table}
+
+Diese relativen Größen bleiben subtil, aber dennoch stark genug, um vom menschlichen Auge erkannt zu werden, wodurch die verschiedenen Prioritäten angezeigt werden können.
+Beachten Sie auch, dass eine Markierung mit einer höheren Priorität vor einer Markierung mit einer niedrigeren Priorität angezeigt wird.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{map_markers_size}
+  \caption{Markern mit ihrer relativen Größe auf der Karte}
+  \label{fig:map_markers_size}
+\end{figure}
+
