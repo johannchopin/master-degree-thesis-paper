@@ -217,3 +217,35 @@ Diese sollte die Namen der nach Status gruppierten Sensoren sowie einen Balken m
 
 Der stärkste Status ist das Vorhandensein eines Feuers.
 Um seine Sichtbarkeit und Erkennung zu verstärken, wird ein Marker eines Sensors mit dem Status \textit{in Feuer} eine Bounce-Animation haben.
+
+
+\subsection{Interaktion mit der Karte}
+
+Da die Daten nun geografisch gut auf der Karte dargestellt sind, müssen sie interaktiv gestaltet werden, um dem Nutzer das reichhaltigste Erlebnis zu bieten.
+In diesem Schritt kann der Nutzer die Karte vergrößern und verkleinern sowie die Ansicht mithilfe von Drag und Drop verschieben.
+Dies ermöglicht ihr bereits, die verschiedenen Cluster von Standorten oder Sensoren zu erkunden.
+Wenn der Nutzer auf einen Cluster klickt, zoomt die Map bis zu dem Punkt, an dem sich der Cluster in mindestens zwei Einheiten teilt, und zentriert sich auf den Ursprungspunkt des Clusters.
+Dasselbe gilt für den Marker eines \textit{Site}: Wenn er angeklickt wird, zoomt die Karte bis zu dem Punkt, an dem mindestens zwei Sensorcluster oder Sensoren auf der Karte sichtbar sind.
+
+Um Details über den gesamten Standort zu erhalten, kann der Nutzer auf den Abdeckungsbereich des Standortes klicken.
+Dadurch wird ein Informationsbereich auf der Karte geöffnet.
+Ursprünglich war dieser Bereich eine Sprechblase, die neben der Website angezeigt wurde (siehe \ref{fig:map_old_site_details} im Anhang).
+Um den UI-Standard der weltweit verbreiteten Anwendung Google Maps zu verwenden und Platz für die Anzeige der Informationen zu sparen, werden die Details in einer verschiebbaren Seitenleiste auf der linken Seite der Karte angezeigt.
+Um die ausgewählte \textit{Site} hervorzuheben, wird der Rand des Bereichs vergrößert und gestrichelt dargestellt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{map_site_details}
+  \caption{Anzeige eines Details einer \textit{Site} nach Auswahl}
+  \label{fig:map_site_details}
+\end{figure}
+
+In der gleichen Idee öffnet sich diese Sidebar mit den Details eines Sensors, wenn er ausgewählt ist.
+Der Marker des Sensors wird dann von einem kreisförmigen, hellfarbigen Bereich mit einem gestrichelten Rand umgeben.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{map_sensor_details}
+  \caption{Anzeige eines Details einer Sensor nach Auswahl}
+  \label{fig:map_sensor_details}
+\end{figure}
