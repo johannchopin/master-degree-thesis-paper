@@ -30,3 +30,27 @@
 \end{figure}
 
 \input{Chapters/Anhang/MapZoomFlow.tex}
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Vereinfachter Code für die \lstinline{getUrlPortionLabel}-Methode},
+  captionpos=b,
+  label={lst:getUrlPortionLabel}
+]
+const capitalizeFirstLetter = (chars: string): string => {
+  return chars.charAt(0).toUpperCase() + chars.slice(1);
+}
+
+private getUrlPortionLabel = (urlPortion: string): string => {
+  const isNumber = !isNaN(urlPortion)
+
+  if (!isNumber) {
+    const isAction = urlPortion.startsWith("_")
+    if (isAction) urlPortion = urlPortion.slice(1) // remove first char in string
+
+    return capitalizeFirstLetter(urlPortion)
+  }
+
+  return urlPortion
+}
+\end{lstlisting}

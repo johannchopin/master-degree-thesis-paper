@@ -229,3 +229,73 @@ Dieses Schema mit dem Objekt \lstinline{children} kann rekursiv wiederholt werde
   ],
 }
 \end{lstlisting}
+
+Diese Funktion des Routers hat es ermöglicht, leicht von einer Architektur wie \ref{fig:site_map} zu \ref{fig:site_map_v2} zu migrieren.
+
+\subsection{Generische Breadcrumb zum URI}
+
+Da die Anwendung nun aus \ac{REST}-Routen besteht, ist es sehr einfach, ein generalisiertes Breadcrumb-System einzuführen.
+Das Designsystem PrimeNg stellt eine \lstinline{p-breadcrumb}-Komponente zur Verfügung, mit der Sie einen Breadcrumb anzeigen können, indem Sie ihm ein Array von Elementen vom Typ \lstinline{MenuItem}\footnote{Siehe \href{https://www.primefaces.org/primeng/menumodel}{https://www.primefaces.org/primeng/menumodel}} übergeben.
+Die Eigenschaften \lstinline{label} und \lstinline{routerLink} von \lstinline{MenuItem} sind die für uns interessantesten, um diese Komponente zu rendern.
+
+Eine benutzerdefinierte Komponente namens \lstinline{dryad-breadcrumb} wird erstellt, die sich um die Anzeige des \ac{URL}-Pfads kümmert, indem sie jedes Element der \ac{URI} unterteilt und als breadcrumb anzeigt.
+Diese wird in der Layoutkomponente MainLayoutComponent gerendert und ist somit für alle Seiten zugänglich.
+Ihre Aufgabe ist es, auf Änderungen an der \ac{URL} zu hören und eine Variable \lstinline{items} zu ändern, die das Array von \lstinline{MenuItem} enthält, die von der \lstinline{p-breadcrumb}-Komponente angezeigt werden sollen.
+Die Variable items wird mithilfe einer \lstinline{setBreadcrumbItems}-Methode gesetzt, die alle \ac{URI}-Komponenten durchläuft und für jede den \ac{URI} für \lstinline{routerLink} und das \lstinline{label} mithilfe der Methode \lstinline{getUrlPortionLabel} festlegt.
+
+Die Methode \lstinline{getUrlPortionLabel} sorgt dafür, dass der erste Buchstabe der \ac{URI}-Komponente einfach großgeschrieben wird, wenn es sich um ein Wort handelt.
+Wenn es sich um eine \ac{REST}-Aktion handelt (siehe \ref{sec:rest_custom}), wird der ursprüngliche Underscode entfernt, um den Benutzer nicht zu verwirren.
+Der vereinfachte Code, der für diese Methode verwendet wird, ist im Anhang \ref{lst:getUrlPortionLabel} zu finden.
+
+Die Methode \lstinline{setBreadcrumbItems} muss für jede Komponente der \ac{URI} die \ac{URL} neu erstellen, indem sie den Wert der \ac{URI} des vorherigen Elements übernimmt.
+Wenn es sich um das letzte Element der \ac{URI} handelt, darf es keine \ac{URL} haben, da es für den Benutzer nicht notwendig ist, von einer Breadcrumb aus auf dieselbe Seite zu navigieren.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Vereinfachter Code zur Generierung von Items für eine Breadcrumb aus einer URL},
+  captionpos=b,
+  label={lst:setBreadcrumbItems}
+]
+private setBreadcrumbItems = (url: string): void => {
+  this.items = [] as MenuItem[]
+  const urlPortions = url.split("/").filter(urlPortion => urlPortion !== '')
+
+  urlPortions.forEach((urlPortion, index) => {
+    const isFirstUrlPortion = index === 0
+    const isLastUrlPortion = index === urlPortions.length - 1
+
+    const label = this.getUrlPortionLabel(urlPortion)
+    if(isFirstUrlPortion)
+      this.items.push({
+        label,
+        routerLink: isLastUrlPortion ? undefined : urlPortion
+      })
+    else {
+      const routerLink = this.items[index - 1].routerLink + "/" + urlPortion
+
+      this.items.push({
+        label,
+        routerLink: isLastUrlPortion ? undefined : routerLink
+      })
+    }
+  })
+}
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=11cm]{app_breadcrumb}
+  \caption{Gerenderte breadcrumb-Komponente für den URI \lstinline{/sites/8/packets/_create}}
+  \label{fig:app_breadcrumb}
+\end{figure}
+
+Die \lstinline{p-breadcrumb}-Komponente wird nicht angezeigt, wenn es weniger als zwei Items gibt.
+Dies geschieht einfach in der Vorlage mit einer \lstinline{*ngIf}-Bedingung.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Bedingte Anzeige der Komponente \lstinline{p-breadcrumb} in der Template der customisierten Komponente \lstinline{dryad-breadcrumb}},
+  captionpos=b,
+]
+<p-breadcrumb *ngIf="items.length > 1" [model]="items"></p-breadcrumb>
+\end{lstlisting}
