@@ -95,5 +95,174 @@ Das Detail der neuen API, das für die Karte gewidmet ist, finden Sie im Anhang 
 
 \subsection{Clustering von \textit{Sites} und Sensoren}
 
+Dieser Abschnitt konzentriert sich auf das Abrufen von Geodaten von \textit{Sites} und Sensoren und deren optimierte Clustering.
+
+\subsubsection{Punkt-Clustering-Algorithmus}
+
 Die Tatsache, dass es zwei mögliche Ebenen von Clustern zwischen \textit{Sites} und Sensoren gibt, erlaubt es nicht, das native Clustering-API von Google Maps zu verwenden, das nur für Punkte mit der gleichen Hierarchie funktioniert.
 Wir müssen also die Clustering-Logik selbst entwickeln, indem wir den \ref{fig:map_clustering_flow} flow implementieren.
+
+Es gibt viele Algorithmen für das Clustering von Geopunkten, aber um das Rad nicht neu zu erfinden, wird das mapbox \textit{supercluster}\footnote{Siehe \href{https://github.com/mapbox/supercluster}{https://github.com/mapbox/supercluster}} project verwendet, das im Hintergrund von Google Maps eingesetzt wird.
+Diese Open-Source-Javascript-Bibliothek ist sehr populär geworden, da sie Punkte unter dem GeoJSON-Datenstandard\cite{rfc7946} verwaltet und eine unglaubliche Leistung beim Clustern von Millionen von Punkten mit Hilfe eines \textit{gierigen hierarchischen Clustering}-Algorithmus\cite{supercluster} erzielt.
+
+Die Logik hinter diesem Algorithmus besteht darin, die nächstgelegenen Punkte zu bestimmten Punkten anhand eines Radius zu berechnen, um einen neuen Clusterpunkt auf der tiefsten Zoomstufe der interaktiven Karte zu bilden (18 im Fall von Google Maps in der Anwendung von dryad).
+Der Algorithmus wiederholt die Operation bei der obersten Zoomstufe mit den Clusterpunkten, bis er bei Zoom 0 angekommen ist.
+Auf diese Weise nimmt die Anzahl der zu clusternden Punkte mit abnehmendem Zoom-Level exponentiell ab.
+Der Algorithmus erlaubt es auch, sofort die untergeordneten Cluster eines bestimmten Clusters zu erkennen.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{supercluster_clustering}
+  \caption{Darstellung des Algorithmus \textit{gierigen hierarchischen Clusterings} in Abhängigkeit von der Zoomstufe}
+  \label{fig:supercluster_clustering}
+\end{figure}
+
+\subsubsection{Abrufen von geospatialen Punkten}
+
+Der Clustering-Algorithmus ist entweder sehr optimiert, aber wenn er beim Laden der Karte durch den Benutzer alle Sensoren clustern soll, muss der Benutzer auf viele zeitraubende \ac{HTTP}-Anfragen warten.
+Daher ist es notwendig, die verschiedenen API-Aufrufe nur dann zu tätigen, wenn der Clustering-Algorithmus sie benötigt.
+Der Daten-Fetch-Flow kann folgendermaßen schematisiert werden:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=9cm]{map_fetch_flow}
+  \caption{Logik der API-Aufrufe bei der Benutzerinteraktion auf der interaktiven Karte}
+  \label{fig:map_fetch_flow}
+\end{figure}
+
+So erfolgt der Aufruf der API zur Lokalisierung der Sensoren nur, wenn ein Standort isoliert und auf der Karte sichtbar ist und die Zoomstufe größer als 10 ist.
+
+Die Zoomstufe 10 entspricht der Anzeigeebene einer Stadt wie Berlin.
+Es wurde intern gesehen, dass es unwahrscheinlich ist, dass ein Kunde jemals eine einzige zu schützende \textit{Site} dieser Größe haben wird.
+So wird der API-Aufruf lange vor dem Zeitpunkt erfolgen, an dem die Sensoren einzeln angezeigt werden müssen, sodass die Daten Zeit haben, verarbeitet zu werden.
+
+\subsubsection{Caching von Clustern}
+
+Die \textit{supercluster}-API ermöglicht es, die Cluster der geladenen Punkte für einen bestimmten Zoom-Level und einen rechteckigen Bereich der Karte namens bbox zu berechnen, der aus den Koordinaten der vier Punkte in diesem Rechteck instanziiert wird.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Vereinfachter Code für das Laden von Punkten und die Berechnung von Clustern mit \textit{supercluster}},
+  captionpos=b,
+  label={lst:supercluster_example}
+]
+import Supercluster from "supercluster"
+
+const supercluster = new Supercluster({...options})
+supercluster.load(points)
+
+supercluster.getClusters(bbox, zoomLevel) // list of cluster points
+\end{lstlisting}
+
+Würde man auf diese Weise die Cluster berechnen, die bei einer Bewegung der Karte auf der Karte angezeigt werden sollen, müsste man die alten Cluster von der Karte entfernen, um die neuen zu zeichnen.
+Nur bei vielen Interaktionen, wie z. B. einem kurzen Mausklick, sind die Cluster, die angezeigt werden sollen, bereits auf der Karte vorhanden.
+Sie sollten die Aktionen Hinzufügen und Löschen auf der Google Maps-Karte nur dann ausführen, wenn es notwendig ist.
+Beachten Sie, dass es notwendig ist, Marker auf der Karte zu entfernen, die nicht sichtbar sind, um die Leistung der interaktiven Karte nicht zu verlangsamen.
+
+Dazu wird eine Wrapperklasse \lstinline{SuperCluster} verwendet.
+Diese speichert die auf der Karte angezeigten Cluster im Speicher.
+Bei der Berechnung neuer Cluster gibt sie zurück, welche Cluster gelöscht, welche hinzugefügt und welche übrig bleiben.
+Diese Cluster werden in der Struktur eines \lstinline{Feature<Point>} aus dem GeoJSON-Standard\cite{rfc7946} angegeben.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=11cm]{class_diagram_supercluster}
+  \caption{Class diagramm des \textit{SuperCluster}-Wrappers}
+  \label{fig:class_diagram_supercluster}
+\end{figure}
+
+Cluster werden im Objekt \lstinline{storedClusters} gespeichert, indem sie durch ihren Längen- und Breitengrad, getrennt durch ein Komma, identifiziert werden.
+Zwei Cluster können sich nicht zur selben Zeit am selben Ort befinden, daher ist die Kennung eindeutig.
+
+Die Instanz der Google Maps-Karte wird an den \lstinline{SuperCluster}-Konstruktor übergeben.
+So wird der Bereich bbox ist die Zoomstufe bei jedem Aufruf der Methode \lstinline{getClustersActions} automatisch erkannt.
+
+Mit der Methode \lstinline{getClusterExpansionZoom} können Sie die nächste Zoomstufe erfahren, bei der ein Cluster geteilt wird.
+Diese Methode ist sehr nützlich für die Implementierung der in \ref{sec:map_interaction} erwähnten Clickinteraktionen.
+
+\subsubsection{Übersetzung und Akkumulierung von Daten in das GeoJSON-Format}
+
+Die Standort- und Sensordaten der API kommen als Array von Elementen des Typs \lstinline{SiteStatus} und \lstinline{SensorNodeStatus} an (siehe \ref{appendix:map-api}).
+Wir müssen jede Entität in GeoJSON-Punkte vom Typ \lstinline{Feature<Point>} umwandeln, damit wir sie mit supercluster clustern können.
+Der Vorteil der Verwendung eines \lstinline{Feature}-Objekts anstelle eines einfachen \lstinline{Point} liegt darin, dass jede Markierung die notwendigen Informationen enthalten muss, um den Status eines Sensors oder Clusters zu ermitteln, wie im Abschnitt \ref{sec:help_reading_map} beschrieben.
+Das Feature-Objekt\footnote{Siehe \href{https://www.rfc-editor.org/rfc/rfc7946\#section-3.2}{https://www.rfc-editor.org/rfc/rfc7946\#section-3.2}} besteht nämlich aus einer geospazialen Information, der zusätzliche \lstinline{properties} hinzugefügt werden können.
+
+Die \lstinline{properties} für \textit{Sites}- und Sensorpunkte sind \lstinline{SiteProperties} bzw. \lstinline{DeviceProperties}, die Sie im Anhang \ref{lst:pointsproperties} finden.
+Dann loopen einfach alle Elemente der API-Antwort und wenden eine Mutation auf das Element mittels einer Funktion an, wie im folgenden Beispiel, das ein \lstinline{SiteStatus}-Objekt eingibt und ein \lstinline{Feature<Point, SiteProperties>}-Objekt zurückgibt.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Beispiel für eine Ein-/Ausgabefunktion, die die Übersetzung eines Typs ermöglicht},
+  captionpos=b,
+  label={lst:toPointConvertion}
+]
+const getSiteClusterPoint = (site: SiteStatus): Feature<Point, SiteProperties> => {
+  const {
+    id,
+    name,
+    fireAlertStatus,
+    centerLatitude,
+    centerLongitude,
+  } = site
+
+  return {
+    type: "Feature",
+    properties: {
+      site_id: id,
+      name,
+      lat: centerLatitude,
+      lng: centerLongitude,
+      fire_alert: fireAlertStatus === 0 ? undefined : fireAlertStatus,
+      offline: Utils.isOffline(site),
+      maintenance: Utils.needsMaintenance(site),
+    },
+    geometry: {
+      type: "Point",
+      coordinates: [ centerLongitude, centerLatitude ],
+    },
+  }
+}
+\end{lstlisting}
+
+Die Eigenschaften \lstinline{fire_alert}, \lstinline{offline} und \lstinline{maintenance} ermöglichen es, den Status eines \textit{Site} oder Sensors zu erfahren.
+Ein Cluster aus mehreren Elementen muss daher auch diese Eigenschaften haben, um seinen Status zu kennen, der die Akkumulation der Eigenschaften der Elemente, aus denen er besteht, widerspiegelt.
+
+Die Eigenschaften \lstinline{map} und \lstinline{reduce} (siehe \href{https://github.com/mapbox/supercluster\#property-mapreduce-options}{https://github.com/mapbox/supercluster\#property-mapreduce-options}) des Objekts \lstinline{options}, die bei der Instanziierung von \lstinline{SuperCluster} übergeben werden können, ermöglichen es, die Eigenschaften jedes Punktes eines berechneten Clusters zu akkumulieren.
+Das folgende Beispiel ermöglicht es einem Cluster, die Eigenschaften jedes Sensors zu akkumulieren, um die im Abschnitt \ref{sec:help_reading_map} detailliert beschriebene Priorität zu erfüllen.
+Der Cluster hat auch die Eigenschaft \lstinline{devices}, die allen Punkten der Sensoren, aus denen er besteht, entspricht.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={\lstinline{SuperCluster}-Akkumulationsoptionen für Sensorcluster},
+  captionpos=b,
+  label={lst:clustering_reduce_options}
+]
+const options = {
+  map: (props) => ({
+    devices: [ props ],
+    id: props.id,
+    name: props.name,
+    fire_alert: props.fire_alert,
+    offline: props.offline,
+    maintenance: props.maintenance,
+  }),
+  reduce: (accumulated, props) => {
+    const getAccumulatedFireAlert = (): AlertPhases | undefined => {
+      if (accumulated.fire_alert) {
+        if (accumulated.fire_alert === AlertPhases.PHASE_TWO || props.fire_alert === AlertPhases.PHASE_TWO)
+          return AlertPhases.PHASE_TWO
+        if (accumulated.fire_alert === AlertPhases.PHASE_ONE)
+          return AlertPhases.PHASE_ONE
+        return props.fire_alert
+      }
+      return props.fire_alert
+    }
+
+    accumulated.devices = accumulated.devices ? [ ...accumulated.devices, props ] : [ props ]
+    accumulated.fire_alert = getAccumulatedFireAlert()
+    accumulated.offline = accumulated.offline || props.offline
+    accumulated.maintenance = accumulated.maintenance || props.maintenance
+  },
+}
+\end{lstlisting}
+

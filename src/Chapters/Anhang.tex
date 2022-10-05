@@ -99,3 +99,22 @@ interface SensorNodeStatus {
   batteryLevel: number
 }
 \end{lstlisting}
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom GeoJSON-Punkteigenschaften von \textit{Sites} und Sensoren},
+  captionpos=b,
+  label={lst:pointsproperties}
+]
+interface SiteProperties {
+  site_id: string
+  name: string
+  lat: number
+  lng: number
+  fire_alert?: AlertPhases // 1 or 2
+  offline?: boolean
+  maintenance?: boolean
+}
+
+type DeviceProperties = Omit<SiteProperties, "site_id"> & { id: number; type: "sensor" | "gateway" }
+\end{lstlisting}
