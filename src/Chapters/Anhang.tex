@@ -54,3 +54,48 @@ private getUrlPortionLabel = (urlPortion: string): string => {
   return urlPortion
 }
 \end{lstlisting}
+
+\section{Unterzeichnung der API, die für die interaktive Karte gedacht ist} \label{appendix:map-api}
+\subsection{Liste der \textit{Sites}}
+
+\textbf{GET /sites/status}
+
+Die Antwort ist ein Array aus Elementen vom Typ \lstinline{SiteStatus}:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom Typ \lstinline{SiteStatus}},
+  captionpos=b
+]
+interface SiteStatus {
+  id: number
+  name: string
+  centerLatitude: number
+  centerLongitude: number
+  fireAlertStatus: number // 1: maybe fire; 2: fire detected
+  lastMessageTimestamp: string // used to detect bad connectivity
+  batteryLevel: number // used to detect bad sun exposition
+}
+\end{lstlisting}
+
+\subsection{Liste der Sensoren eines \textit{Site}}
+
+\textbf{GET /sites/:siteId/sensornodes/status}
+
+Die Antwort ist ein Array aus Elementen vom Typ \lstinline{SensorNodeStatus}:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom Typ \lstinline{SensorNodeStatus}},
+  captionpos=b
+]
+interface SensorNodeStatus {
+  id: number
+  name: string
+  latitude: number
+  longitude: number
+  fireAlertStatus: number
+  lastMessageTimestamp: string
+  batteryLevel: number
+}
+\end{lstlisting}
