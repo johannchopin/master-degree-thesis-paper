@@ -21,7 +21,7 @@ Die beiden folgenden Beispielseiten haben zum Beispiel keine klaren Elemente, di
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{app_page_planning_old}
-  \caption{Seite der Schnittstelle, mit der Sie den Einsatz von Sensoren an einem \textit{Sites} planen können.}
+  \caption{Seite der Schnittstelle, mit der Sie den Einsatz von Sensoren an einem \textit{Sites} planen können}
   \label{fig:app_page_planning_old}
 \end{figure}
 
@@ -71,7 +71,7 @@ Hier ist ein Beispiel für eine Kombination von Seitentiteln mit einem relevante
   \caption{Beispiel für eine Kombination von Seitentiteln mit einem Hauptseitentitel}
 \end{table}
 
-\subsection{Übersichtliches Navigationssystem}
+\subsection{Übersichtliches Navigationssystem} \label{sec:navigationssystem}
 
 Die Navigation des Nutzers sollte so einfach wie möglich gestaltet werden, damit es keine Ambiguität gibt, die es dem Nutzer erlaubt, die Oberfläche selbst zu erkunden.
 Die ergonomische Inspektion \ref{appendix:ergonomic-inspection} zeigt jedoch einen großen Usability-Fehler in der Seitenleiste der Anwendung, die als Navigationsmenü fungiert.
@@ -107,7 +107,7 @@ Breadcrumbs sind eine Liste von Links, die die aktuelle Seite und ihre "Vorgäng
 Die Schnittstelle muss eine generische Logik implementieren, die es ermöglicht, dem Benutzer auf jeder verfügbaren Seite eine Breadcrumb-Komponente anzuzeigen.
 Diese muss so gestaltet sein, dass das Hinzufügen von Seiten nicht dazu führt, dass der Code, der mit der Breadcrumb-Komponente verknüpft ist, in irgendeiner Weise manipuliert werden muss.
 
-\subsection{Hierarchie der Anwendung}
+\subsection{Hierarchie der Anwendung} \label{sec:hierarchie_anwendung}
 
 Mit der breadcrumb-Komponente können Sie die Tiefenstruktur einer Seite anzeigen.
 Allerdings muss die Anwendung als Ganzes eine Tiefenstruktur aufweisen, damit Sie Seiten leicht in Gruppen zusammenfassen können.
@@ -141,7 +141,7 @@ Die REST-Konvention legt außerdem die folgenden Regeln fest:
   \item Der \ac{URI} muss in Kleinbuchstaben definiert werden.
 \end{itemize}
 
-\subsubsection{Anwenden der REST-Konvention auf die Anwendung}
+\subsubsection{Anwenden der REST-Konvention auf die Anwendung} \label{sec:rest_custom}
 
 In der vorliegenden Form ermöglicht es die REST-Konvention praktisch, das Routing aller unserer Seiten auf strukturierte Weise zu erstellen.
 Dies ist der Fall bei Seiten, die eine Sammlung oder ein Singleton anzeigen wollen, aber bei sogenannten Aktionsseiten muss noch einiges getan werden.
@@ -174,4 +174,5 @@ Mit der Umsetzung all dieser Regeln ist es schließlich möglich, eine standardi
 
 So kann man direkt die Relevanz dieser Normierung erkennen, die es ermöglicht, eine flache Hierarchie in eine tiefere und organisiertere Baumstruktur zu verwandeln.
 Dies hat auch den Vorteil, dass der Nutzer ganz einfach ganz bestimmte Seiten der Anwendung teilen kann.
+Dies macht die Verwendung einer Breadcrumb-Komponente sinnvoller.
 Es würde zu lange dauern, die gesamte Hierarchie der aktuellen Anwendung zu refaktorisieren, daher wird sich die Thesis nur mit der Sammlung \lstinline{/sites} und ihren Nachkommen beschäftigen.

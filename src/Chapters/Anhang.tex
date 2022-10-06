@@ -7,7 +7,7 @@
 \includepdf[
   pages=-,
   scale=0.75,
-  pagecommand={\label{dryad-ergonomic-inspection}\thispagestyle{plain}}
+  pagecommand={\thispagestyle{plain}}
 ]{Statics/dryad-ergonomic-inspection.pdf}
 
 \section{Formular für die Gemeinschaft der Feuerwehrleute (Deutsch)} \label{appendix:firefighter-survey}
@@ -15,8 +15,106 @@
 \includepdf[
   pages=-,
   scale=0.75,
-  pagecommand={\label{firefighter-survey-overview}\thispagestyle{plain}}
+  pagecommand={\thispagestyle{plain}}
 ]{Statics/firefighter-survey-overview.pdf}
 
 \input{Chapters/Anhang/FirefighterSurvey}
 \input{Chapters/Anhang/QuestionBoardMap}
+\input{Chapters/Anhang/PlaningDevicesFlow}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm]{map_old_site_details}
+  \caption{Anzeige der Details einer \textit{Site} auf der ursprünglichen interaktiven Karte}
+  \label{fig:map_old_site_details}
+\end{figure}
+
+\input{Chapters/Anhang/MapZoomFlow.tex}
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Vereinfachter Code für die \lstinline{getUrlPortionLabel}-Methode},
+  captionpos=b,
+  label={lst:getUrlPortionLabel}
+]
+const capitalizeFirstLetter = (chars: string): string => {
+  return chars.charAt(0).toUpperCase() + chars.slice(1);
+}
+
+private getUrlPortionLabel = (urlPortion: string): string => {
+  const isNumber = !isNaN(urlPortion)
+
+  if (!isNumber) {
+    const isAction = urlPortion.startsWith("_")
+    if (isAction) urlPortion = urlPortion.slice(1) // remove first char in string
+
+    return capitalizeFirstLetter(urlPortion)
+  }
+
+  return urlPortion
+}
+\end{lstlisting}
+
+\section{Unterzeichnung der API, die für die interaktive Karte gedacht ist} \label{appendix:map-api}
+\subsection{Liste der \textit{Sites}}
+
+\textbf{GET /sites/status}
+
+Die Antwort ist ein Array aus Elementen vom Typ \lstinline{SiteStatus}:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom Typ \lstinline{SiteStatus}},
+  captionpos=b
+]
+interface SiteStatus {
+  id: number
+  name: string
+  centerLatitude: number
+  centerLongitude: number
+  fireAlertStatus: number // 1: maybe fire; 2: fire detected
+  lastMessageTimestamp: string // used to detect bad connectivity
+  batteryLevel: number // used to detect bad sun exposition
+}
+\end{lstlisting}
+
+\subsection{Liste der Sensoren eines \textit{Site}}
+
+\textbf{GET /sites/:siteId/sensornodes/status}
+
+Die Antwort ist ein Array aus Elementen vom Typ \lstinline{SensorNodeStatus}:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom Typ \lstinline{SensorNodeStatus}},
+  captionpos=b
+]
+interface SensorNodeStatus {
+  id: number
+  name: string
+  latitude: number
+  longitude: number
+  fireAlertStatus: number
+  lastMessageTimestamp: string
+  batteryLevel: number
+}
+\end{lstlisting}
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={TypeScript Interface vom GeoJSON-Punkteigenschaften von \textit{Sites} und Sensoren},
+  captionpos=b,
+  label={lst:pointsproperties}
+]
+interface SiteProperties {
+  site_id: string
+  name: string
+  lat: number
+  lng: number
+  fire_alert?: AlertPhases // 1 or 2
+  offline?: boolean
+  maintenance?: boolean
+}
+
+type DeviceProperties = Omit<SiteProperties, "site_id"> & { id: number; type: "sensor" | "gateway" }
+\end{lstlisting}

@@ -1,0 +1,134 @@
+\section{Verwendung des Frameworks Angular} \label{sec:angular}
+
+Die Implementierung zahlreicher Lösungen für die Anforderungen der Schnittstelle wird über das Angulars-Framework und seine zahlreichen Konzepte erfolgen.
+Dieser Teil wird sich auf die hauptsächlich verwendeten Konzepte und ihren Nutzen konzentrieren.
+
+\subsection{Components}
+
+Um die Verwaltung des Codes zu vereinfachen, schlägt Angular vor, die verschiedenen Teile einer Anwendung, die mehrfach verwendet werden, in Komponenten aufzuteilen.
+Diese Komponenten bestehen hauptsächlich aus einer TypeScrypt-Klasse, mit der die Komponente gesteuert werden kann, einer dynamischen HTML-Schablone, mit der ein \ac{DOM} leicht erstellt werden kann, und CSS-Stilen, um das visuelle Erscheinungsbild zu verwalten.
+Im Quellcode sind die Komponenten an den drei Dateien gemäß dem Benennungsstandard zu erkennen:
+
+\begin{itemize}
+  \item \textbf{Controller}: ComponentName.component.ts
+  \item \textbf{Template}: ComponentName.component.html
+  \item \textbf{Styles}: ComponentName.component.scss
+\end{itemize}
+
+Diese drei Dateien werden immer in einem Ordner mit dem Namen der Komponente zusammengefasst.
+Die HTML-Schablone kann mithilfe der verschiedenen Syntax von Angular für den Controller reaktionsfähig gemacht werden\footnote{Siehe \href{https://angular.io/guide/template-syntax}{https://angular.io/guide/template-syntax}}.
+So würde eine Komponente zur Anzeige eines Zählers mit einer Schaltfläche zum Inkrementieren des Zählers aussehen:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Controller der Komponente counter-increment},
+  captionpos=b,
+  label={lst:component_example}
+]
+import { Component } from "@angular/core";
+
+@Component({
+  selector: "counter-increment",
+  templateUrl: "./counter-increment.component.html",
+  styleUrls: ["./counter-increment.component.css"]
+})
+export class CounterIncrementComponent {
+  public counter = 0;
+
+  public increment = (): void => {
+    this.counter = this.counter + 1;
+  };
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=html,caption={Template der Komponente counter-increment},captionpos=b]
+<h1>{{counter}}</h1>
+<button (click)="increment()">Increment</button>
+\end{lstlisting}
+
+\subsection{Router}
+
+Angular-Komponenten ermöglichen es, Teile der Benutzeroberfläche zu isolieren, von Mikrokomponenten wie einer Schaltfläche bis hin zu den verschiedenen Seiten der Benutzeroberfläche.
+Es ist wichtig, dass der Nutzer die verschiedenen Seiten über eine eindeutige \ac{URL} aufruft, wie im Abschnitt \ref{sec:workload} erwähnt.
+Das Angular-Framework bietet eine Out-of-the-Box-Lösung, die es ermöglicht, eine bestimmte Komponente auf der Grundlage des \ac{URI} der Anwendung anzuzeigen, so dass auch die vom \ac{URI} übertragenen Informationen abgerufen werden können: Angular Router\footnote{Siehe \href{https://angular.io/guide/router}{https://angular.io/guide/router}}.
+Der Router wird einfach mit einem Array aus mehreren Routen\footnote{Siehe \href{https://angular.io/api/router/Route}{https://angular.io/api/router/Route}} konfiguriert, das aus einem Pfad und der anzuzeigenden Komponente besteht.
+
+\begin{lstlisting}[language=javascript,caption={Router-Einstellung, mit der zwei Komponenten an zwei URIs der Anwendung angezeigt werden},captionpos=b]
+const routes: Routes = [
+  { path: '', component: HomePageComponent },
+  { path: 'map', component: MapPageComponent }
+];
+\end{lstlisting}
+
+\subsection{Services}
+Die Anwendung besteht also aus vielen verschiedenen Komponenten.
+Es kann jedoch vorkommen, dass diese Komponenten ein und dasselbe Stück Code mehrfach verwenden müssen.
+Angular implementiert dafür sogenannte Services.
+Services sind ein Mechanismus, um die Funktionalität zwischen den Komponenten zu teilen.
+Es gibt ein Prinzip in der Softwareentwicklung, nämlich \ac{DRY}, und die Verwendung von Services in Angular folgt sicher diesem Prinzip.
+Die Logik oder Daten werden in einem Service implementiert und der Service kann über mehrere Komponenten Ihrer Angular-Anwendung verwendet werden.
+Das typischste Beispiel für die Nutzung eines Service ist der Aufruf einer API.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Beispiel für einen Service, der die Interaktion mit einer externen API ermöglicht},
+  captionpos=b,
+  label={lst:service_example}
+  ]
+import { Injectable } from '@angular/core'
+import { HttpClient } from '@angular/common/http'
+import { Observable } from 'rxjs'
+
+export class User {
+  id: string;
+  name: string;
+  email: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class UserService {
+
+  endPoint = 'https://path/to/api'
+
+  constructor(private httpClient: HttpClient) { }
+
+  getAll(): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.endPoint + '/users')
+  }
+
+  get(id: number): Observable<User> {
+    return this.httpClient.get<User>(this.endPoint + '/users/' + id)
+  }  
+
+  delete(id: number): Observable<User> {
+    return this.httpClient.delete(this.endPoint + '/users/' + id)
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=javascript,caption={Vereinfachtes Beispiel für die Nutzung des Service definiert in \ref{lst:service_example}},captionpos=b]
+import { UserService, User } from "./user.service"
+
+// ...
+
+export class UsersComponent implements OnInit {
+  
+  users: User[] = []
+
+  constructor(public userService: UserService) { }
+
+  ngOnInit() {
+    this.userService.getAll().subscribe((users) => {
+      this.users = users
+    })    
+  }  
+}
+\end{lstlisting}
+
+\subsection{Decorator}
+
+Ein Angular-Dekorator ist eine Funktion, mit der Metadaten an eine Klassendeklaration, eine Methode, einen Accessor, eine Eigenschaft oder einen Parameter angehängt werden können.
+Wie bereits in den Beispielen zu sehen ist, verwendet Angular Dekoratoren, um der Klasse, der Methode oder der Eigenschaft Metadaten zur Verfügung zu stellen.
+Beispielsweise müssen Komponenten wissen, wo sie ihre Vorlage finden können. Dies ist möglich, indem der Parameter \lstinline{templateUrl} des \lstinline{@Component}-Dekorators verwendet wird (siehe \ref{lst:component_example}).
