@@ -1,0 +1,81 @@
+\section{Ergonomische Verbesserungen}
+
+Dieser Teil wird sich auf die Implementierung einiger Lösungen für das im Abschnitt \ref{sec:analyse-ergo} erwähnte Problem konzentrieren.
+Diese Lösungen basieren hauptsächlich auf den Eigenschaften der Angular-Frameworks, die im Abschnitt \ref{sec:angular} beschrieben wurden.
+
+\subsection{animierte Illustrationen}
+
+Eine interessante Herausforderung war die Erstellung von animierten Illustrationen, die eine sympathischere Schnittstellenbildung ermöglichten.
+Dazu wurden Angular-Komponenten entwickelt, die aus \ac{SVG}-Vorlagen mit \ac{CSS}-Stilen und -Animationen bestehen, um bestimmte Bereiche des \ac{SVG} zu animieren.
+Die SVGs wurden mit der Figma-Software so erstellt, dass einige Teile der endgültigen SVGs eine eindeutige \ac{HTML}-ID mithilfe der Syntax \lstinline{id="identifer"} haben.
+
+\begin{lstlisting}[
+  language=html,
+  caption={Vereinfachtes SVG der Illustration der Seite 404 (siehe Abbildung \ref{fig:app_404_new})},
+  captionpos=b,
+  label={lst:wifi_illustration_svg}
+]
+<svg xmlns="http://www.w3.org/2000/svg" width="906" height="1006" viewBox="0 0 906 1006" fill="none">
+  <g id="404">
+    <g id="wifi">
+      <path id="wave-3" d="M651.095 135.65C578.316 109.161 ..."/>
+      <path id="wave-2" d="M613.188 239.798C579.397 227.499 ..."/>
+      <path id="wave-1" d="M576.311 341.191C596.659 348.597 ..."/>
+    </g>
+    ...
+\end{lstlisting}
+
+\begin{lstlisting}[
+  language=css,
+  caption={Vereinfachter \ac{SASS}-Code, um das WIFI-Logo wie eine Welle zu animieren, die in der \ac{SVG} \ref{lst:wifi_illustration_svg} enthalten ist},
+  captionpos=b
+]
+#wifi {
+  [id^=wave] {
+    animation: signal-wave 2s infinite;
+  }
+
+  #wave {
+    &-2 { animation-delay: .2s; }
+    &-3 { animation-delay: .4s; }
+  }
+}
+
+@keyframes signal-wave {
+  0% { opacity: 0; }
+  60% { opacity: 1; }
+  100% { opacity: 0; }
+}
+\end{lstlisting}
+
+Insgesamt wurden 4 animierte Illustrationen erstellt, die über einen externen Link zum Service JSFiddle zugänglich sind.
+
+\begin{table}[H]
+  \begin{tabular}{p{0.5\linewidth} | p{0.5\linewidth}}
+    Name der Komponente                                 & Link zur Vorschau                                                                               \\ \hline\hline
+
+    \textbf{app-animated-illustration-peacefull-forest} & \href{https://jsfiddle.net/johannchopin/Lwu0nvm3/}{https://jsfiddle.net/johannchopin/Lwu0nvm3/} \\\hline
+    \textbf{app-animated-illustration-404}              & \href{https://jsfiddle.net/johannchopin/puj3es5q/}{https://jsfiddle.net/johannchopin/puj3es5q/} \\\hline
+    \textbf{app-animated-illustration-access-denied}    & \href{https://jsfiddle.net/johannchopin/pgkh0rfL/}{https://jsfiddle.net/johannchopin/pgkh0rfL/} \\\hline
+    \textbf{app-animated-illustration-site-not-found}   & \href{https://jsfiddle.net/johannchopin/30js2zpr/}{https://jsfiddle.net/johannchopin/30js2zpr/}
+  \end{tabular}
+  \caption{Aktionen, die der Nutzer im Rahmen von Usability-Tests durchführen muss}
+\end{table}
+
+Diese Illustrationen können dann leicht in andere Seiten-Templates integriert werden:
+
+\begin{lstlisting}[
+  language=html,
+  caption={Integration einer animierten Illustration bei einer falschen Eingabe der \textit{Site}-ID durch den Benutzer},
+  captionpos=b
+]
+<div *ngIf="invalidSiteId">
+  <app-animated-illustration-site-not-found></app-animated-illustration-site-not-found>
+  <h2 class="bold">Site Not Found</h2>
+  <p class="text-center">
+    The site you're looking for might be removed or might never exist on earth.
+  </p>
+  ...
+</div>
+\end{lstlisting}
+
