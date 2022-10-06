@@ -117,7 +117,7 @@ Der Algorithmus erlaubt es auch, sofort die untergeordneten Cluster eines bestim
   \label{fig:supercluster_clustering}
 \end{figure}
 
-\subsubsection{Abrufen von geospatialen Punkten}
+\subsubsection{Abrufen von geospatialen Punkten} \label{sec:fetch_map_api}
 
 Der Clustering-Algorithmus ist entweder sehr optimiert, aber wenn er beim Laden der Karte durch den Benutzer alle Sensoren clustern soll, muss der Benutzer auf viele zeitraubende \ac{HTTP}-Anfragen warten.
 Daher ist es notwendig, die verschiedenen API-Aufrufe nur dann zu tätigen, wenn der Clustering-Algorithmus sie benötigt.
@@ -406,7 +406,7 @@ Die Orchestrierung lässt sich in Form des folgenden Flussdiagramms schematisier
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{flow_diagram_close_infowindow}
-  \caption{flow diagramm der Verwaltung von Intervallen, die das Schließen und Öffnen eines \lstinline{InfoWindow} ermöglichen}
+  \caption{Flow diagramm der Verwaltung von Intervallen, die das Schließen und Öffnen eines \lstinline{InfoWindow} ermöglichen (Englisch)}
   \label{fig:flow_diagram_close_infowindow}
 \end{figure}
 
@@ -467,3 +467,27 @@ Mit dem folgenden vereinfachten HTML-Markup können Sie eine Liste der Sensoren 
 </details>
 \end{lstlisting}
 
+\subsection{Verwaltung des Routings der interaktiven Karte}
+
+Eine Seite mit einer Kartenkomponente, die auf allen Bildschirmen angezeigt wird, wird unter dem \ac{URI} der Anwendung \lstinline{/map} angezeigt (siehe Abbildung \ref{fig:map_site_details}).
+Die Analyse im Abschnitt \ref{sec:rest_custom} zeigt, dass es sinnvoll ist, ein Routingsystem anzubieten, das es dem Nutzer einfacher macht, einen Bereich der Karte mithilfe einer \ac{URL} zu teilen.
+Das Routingsystem muss alle Komponenten des \ac{URI}s \lstinline{/sites/:siteId/:deviceType/:deviceId} wie in der Sitemap \ref{fig:site_map_v2} angegeben matchen.
+Änderungen an der \ac{URL} der Anwendung werden auf die gleiche Weise vorgenommen wie bei der Implementierung des Service \lstinline{PageTitle} (siehe \ref{lst:page_title_service}) mit einem \lstinline{Observer}.
+
+Die Logik, die es dann ermöglicht, die Map auf bestimmte Elemente zu fokussieren, wird im folgenden Flow-Diagramm schematisch dargestellt.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{map_router_diagram}
+  \caption{Flow diagramm des Verhaltens der Karte bei Änderung der \ac{URL} (Englisch)}
+  \label{fig:map_router_diagram}
+\end{figure}
+
+Diese Implementierung erscheint naiv, da sie die \ac{API} aufrufen muss, um die Koordinaten zu erhalten, die man sinnvollerweise bereits bei der im Abschnitt \ref{sec:fetch_map_api} erläuterten Clusterberechnung hätte abfragen können.
+Dies ist jedoch notwendig, da die interaktive Karte beim Laden nicht alle Koordinaten abfragt, sondern nur die der \textit{Sites}.
+Die Koordinaten der Sensoren werden nur bei Bedarf abgerufen.
+
+Dies kann zu einem Leistungsabfall führen, wenn die Karte in einer Gesamtansicht aller \textit{Sites} angezeigt wird.
+In dieser Konfiguration wird die Liste der \textit{Sites} zweimal zur gleichen Zeit abgefragt, um die Cluster anzuzeigen und die Karte in der Mitte dieser \textit{Sites} zu zentrieren.
+
+Um dieses spezielle Problem zu lösen, wurde die clientseitige Anwendung so konfiguriert, dass sie \ac{HTTP}-Antworten von der Map-\ac{API} für 30 Sekunden mithilfe des Angular \lstinline{HttpClient} Service\footnote{Siehe \href{https://angular.io/guide/http}{https://angular.io/guide/http}} zwischenspeichert.
