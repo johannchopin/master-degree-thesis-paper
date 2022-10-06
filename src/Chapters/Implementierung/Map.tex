@@ -337,3 +337,37 @@ class Marker {
 \end{lstlisting}
 
 Auf diese Weise werden die Ressourcen, die beim mehrmaligen Hinein- und Herauszoomen verbraucht werden, deutlich reduziert, da keine Berechnungen mehr erforderlich sind, wenn ein bereits vorhandener Marker angezeigt wird.
+
+\subsection{Ereignisverwaltung in Echtzeit}
+
+Das Hinzufügen einer Caching-Logik kann die Verwaltung von Ereignissen in Echtzeit erschweren.
+Denn in der jetzigen Form zeigt der Code die Standorte und ihren Status zum Zeitpunkt des ersten Renderings an.
+Es wurde jedoch beschlossen, zumindest die Erkennung von Waldbränden in Echtzeit anzuzeigen.
+Der Offline- und Wartungsstatus wurde als nicht relevant genug für eine Echtzeitcode-Implementierung durch das Team erachtet.
+
+Da die Entdeckung eines Feuers eher selten ist und die interaktive Karte nicht das Zentrum für derartige Warnmeldungen ist, führte dies zu einer naiven Lösung.
+Sobald eine Nachricht eintrifft, werden die Caches der Marker und Cluster geleert, alle Marker gelöscht und neue Informationen von der \ac{API} angefordert, um den Marker neu zu berechnen und zu zeichnen.
+Alle Marker werden einfach von der Karte entfernt, indem die \lstinline{remove} Methoden jeder Elternklasse auf ihre Kinder angewendet werden.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Beispiel für den kaskadierenden Aufruf der Methode \lstinline{remove} eines Markers von einem \textit{Site} auf die Geräte, aus denen er besteht, und seinen Abdeckungsbereich},
+  captionpos=b,
+  label={lst:remove_cascade}
+]
+class SiteMarker extends Marker implements Focusable {
+  // ...
+  private removeAllDevices = (): void => {
+    Object.values(this.devices).forEach(device => {
+      device.remove()
+    })
+  }
+
+  public remove(): void {
+    super.remove()
+
+    this.removeAllDevices()
+    if(this.area) this.area.remove()
+  }
+}
+\end{lstlisting}
