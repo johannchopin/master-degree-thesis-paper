@@ -1,6 +1,6 @@
 \section{Interaktive Karte}
- [TODO] intro
-- talk about google map
+
+In diesem Teil wird die Implementierung der im Abschnitt \ref{sec:analyse-karten} prototypisch erstellten interaktiven Karte mithilfe des JavaScript-APIs von Google Maps entwickelt.
 
 \subsection{Leistung bei der Datenerfassung}
 
@@ -136,7 +136,7 @@ Die Zoomstufe 10 entspricht der Anzeigeebene einer Stadt wie Berlin.
 Es wurde intern gesehen, dass es unwahrscheinlich ist, dass ein Kunde jemals eine einzige zu schützende \textit{Site} dieser Größe haben wird.
 So wird der API-Aufruf lange vor dem Zeitpunkt erfolgen, an dem die Sensoren einzeln angezeigt werden müssen, sodass die Daten Zeit haben, verarbeitet zu werden.
 
-\subsubsection{Caching von Clustern}
+\subsubsection{Caching von Clustern} \label{sec:clustern_caching}
 
 Die \textit{supercluster}-API ermöglicht es, die Cluster der geladenen Punkte für einen bestimmten Zoom-Level und einen rechteckigen Bereich der Karte namens bbox zu berechnen, der aus den Koordinaten der vier Punkte in diesem Rechteck instanziiert wird.
 
@@ -171,7 +171,7 @@ Diese Cluster werden in der Struktur eines \lstinline{Feature<Point>} aus dem Ge
   \label{fig:class_diagram_supercluster}
 \end{figure}
 
-Cluster werden im Objekt \lstinline{storedClusters} gespeichert, indem sie durch ihren Längen- und Breitengrad, getrennt durch ein Komma, identifiziert werden.
+Cluster werden im Objekt \lstinline{storedClusters} gespeichert, indem sie durch ihren Längengrad, Breitengrad und Zoomstufe, getrennt durch ein Komma, identifiziert werden.
 Zwei Cluster können sich nicht zur selben Zeit am selben Ort befinden, daher ist die Kennung eindeutig.
 
 Die Instanz der Google Maps-Karte wird an den \lstinline{SuperCluster}-Konstruktor übergeben.
@@ -266,3 +266,74 @@ const options = {
 }
 \end{lstlisting}
 
+
+\subsection{Rendering von Markern auf Google Maps}
+
+Die verschiedenen Sensoren, Cluster und \textit{Sites} sollen dem Nutzer nun auf einer interaktiven Google-Maps-Karte mithilfe von Markern angezeigt werden.
+Dies wird durch die Verwendung der Klasse \lstinline{google.maps.Marker}\footnote{Siehe \href{https://developers.google.com/maps/documentation/javascript/examples/marker-modern}{https://developers.google.com/maps/documentation/javascript/examples/marker-modern}} ermöglicht, die als Parameter ein Icon im \ac{SVG}-Format übernehmen kann.
+Mithilfe der Klasse \lstinline{google.maps.Size} kann diesem Marker eine relative Größe zugewiesen werden.
+Auf diese Weise ist es sehr einfach, Marker auf der Karte anzuzeigen, wie im \ref{fig:map_markers_size} beschrieben.
+
+\subsubsection{Ansatz mit funktionaler Programmierung} \label{sec:implementation_functional}
+
+In einem ersten Schritt wurde ein \ac{POC} mithilfe funktionaler Programmierung entwickelt.
+Diese war erfolgreich, da die verschiedenen Sensoren, Cluster und \textit{Sites} auf der Karte angezeigt und beim Verschieben oder Zoomen aktualisiert wurden.
+
+Obwohl der Ansatz ziemlich naiv war, da für jeden neu berechneten Cluster die gesamte Instanziierung eines Markers erneut durchgeführt werden musste (selbst wenn derselbe Marker bereits zuvor instanziiert worden war, was beim Vergrößern und Verkleinern der Karte häufig vorkommt), war keine Leistungsverlangsamung auf PC- oder mobilen Browsern zu erkennen.
+Die Strategie schien aufzugehen, aber schon bald überschnitten sich der Code und die vielen Funktionsaufrufe, sodass das Hinzufügen jedes neuen Features chaotisch wurde.
+
+Wie Sie weiter unten sehen können, wird der Funktionscode für eine solch komplexe Logikverwaltung in einen Programmteil verwandelt, der das Verständnis des Kontrollflusses sehr schwierig macht.
+Diese Nicht-Architektur wird umgangssprachlich als Spaghetti-Programmierung bezeichnet, da sie sich in alle Richtungen ausdehnt\cite{spaghetti}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=23cm,angle=90]{map_functions_poc}
+  \caption{Schematische Darstellung der Funktionsaufrufe für die Anzeige von Markern, die für den \ac{POC} verwendet wurde}
+  \label{fig:map_functions_poc}
+\end{figure}
+
+Der POC-Code zeigt auch die Entstehung von Funktionen, die sich mit der Verwaltung bestimmter Entitäten befassen und andere gemeinsame Funktionen in Form von Vererbung nutzen.
+Diese Art von Architektur lässt direkt an eine Lösung denken, die mit \ac{OOP} entwickelt wurde.
+
+\subsubsection{Ansatz mit der \ac{OOP}}
+
+Der \ac{OOP}-Ansatz des \ac{POC} ermöglicht es, den Code in einzelne Klassen zu isolieren, die sich mit einem sehr konkreten Aspekt der Kartendarstellung befassen (\lstinline{SensorNodeMarker}, \lstinline{SiteArea}, \lstinline{SitesCluster}), während der globale Code aus übergeordneten Klassen (\lstinline{Marker}, \lstinline{Cluster}, \lstinline{DeviceMarker}) wiederverwendet wird.
+Das folgende Klassendiagramm zeigt die Architektur des \ac{POC}, in dem die Verwaltung von Markern, die Reichweite einer \textit{Site} und die Verwaltung von Benutzerinteraktionen implementiert sind.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=24cm,angle=90]{markers_class_diagramm}
+  \caption{Class diagrams des funktionalen POC}
+  \label{fig:markers_class_diagramm}
+\end{figure}
+
+\subsubsection{Leistung des Marker-Renderings auf der Karte}
+
+Wie im Abschnitt \ref{sec:implementation_functional} beschrieben, muss die Instanziierung eines Markers auf der Karte für jeden neu anzuzeigenden Sensor ausgeführt werden, auch wenn dieser bereits zuvor angezeigt wurde.
+Das ist auf unseren Tools kein Leistungsproblem, aber es könnte auf einem viel weniger leistungsfähigen Mobiltelefon sein, wie es bei einigen Kunden in der Welt üblich ist.
+Um diese unnötige Berechnung zu vermeiden, werden die instanziierten Marker jeder \textit{Site} und jedes \textit{Site}-Clusters (\lstinline{SiteMarker}, \lstinline{SitesCluster}) in einem Javascript-Objekt mit einem Schlüssel gespeichert, der auf die gleiche Weise wie im Abschnitt \ref{sec:clustern_caching} generiert wird.
+Die gleiche Logik wird für die Marker der einzelnen Sensoren und Sensorcluster (\lstinline{DeviceMarker}, \lstinline{DevicesCluster}) verwendet.
+
+Auf diese Weise wird jeder Marker für jede unterschiedliche Zoomstufe nur einmal instanziiert.
+Mit den Methoden \lstinline{render} und \lstinline{remove} der Klasse \lstinline{Marker} können Sie den Marker einfach zur Google Maps-Instanz hinzufügen oder ihn wieder entfernen mithilfe der \lstinline{setMap} Methode\footnote{Siehe \href{https://developers.google.com/maps/documentation/javascript/markers}{https://developers.google.com/maps/documentation/javascript/markers}}.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Vereinfachter Code für das Hinzufügen und Entfernen eines Markers auf einer Google Maps Karte},
+  captionpos=b,
+  label={lst:marker_render_remove}
+]
+class Marker {
+  // ...
+  public render(): void {
+    this.marker.setMap(this.map)
+  }
+
+  public remove(): void {
+    this.marker.setMap(null)
+  }
+  // ...
+}
+\end{lstlisting}
+
+Auf diese Weise werden die Ressourcen, die beim mehrmaligen Hinein- und Herauszoomen verbraucht werden, deutlich reduziert, da keine Berechnungen mehr erforderlich sind, wenn ein bereits vorhandener Marker angezeigt wird.
