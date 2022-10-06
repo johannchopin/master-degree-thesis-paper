@@ -371,3 +371,99 @@ class SiteMarker extends Marker implements Focusable {
   }
 }
 \end{lstlisting}
+
+
+\subsection{Anzeige von Informations-Popups}
+
+Die Erstellung eines Informationskastens, wie im \ref{fig:map_sensors_window_collapsed} gezeigt, wird durch das Google Maps API nicht einfach gemacht.
+Es gibt nur eine Klasse \lstinline{InfoWindow}, mit der HTML-Inhalte in einem Bereich nach einer bestimmten Koordinate angezeigt werden können.
+Die Verwendung von Javascript-Code wird dadurch sehr erschwert und die Verwendung von Angular-Komponenten unmöglich gemacht.
+
+\subsubsection{Code-Architektur}
+
+Die Erstellung des Codes für ein Popup dieser Art konnte aufgrund der Informationen, die angezeigt werden mussten, und der zu berücksichtigenden Interaktionsverwaltung nicht trivial sein.
+Tatsächlich ist es erforderlich, dass der Nutzer für jeden Cluster einen Detailabschnitt öffnen kann, um die Entitäten zu erforschen, aus denen er besteht.
+Das Maps native \lstinline{InfoWindow} hat leider das Verhalten, sich sofort zu schließen, wenn die Cursor ein Pixel über das Fenster hinausragt.
+Für die Nutzererfahrung ist es notwendig, dass sie mit einer Verzögerung geschlossen wird, die es dem Nutzer ermöglicht, den Cursor neu zu positionieren.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{class_diagram_infowindow}
+  \caption{Klassendiagramm der Zusammenstellung der Informationsboxen eines Clusters}
+  \label{fig:class_diagram_infowindow}
+\end{figure}
+
+Die Klassen \lstinline{SitesClusterWindow} und \lstinline{DevicesClusterWindow}, die in \lstinline{SitesCluster} bzw. \lstinline{DevicesCluster} instanziiert werden, verwenden viele der nützlichen statischen Methoden der Klasse \lstinline{ClusterWindowHelpers}, die das Rendering von CSS-Stilen und HTML-DOM ermöglichen.
+
+\subsubsection{Verwalten von Cursor-Ausgangsereignissen}
+
+Um dem Nutzer ein flüssiges Erlebnis zu bieten, wird das Informationsfenster erst nach einer halben Sekunde geschlossen oder geöffnet.
+Dadurch wird vermieden, dass alle Popups beim bloßen Überfahren mit der Maus angezeigt werden und das Popup ständig neu geöffnet werden muss, wenn der Mauszeiger einen Pixel verlassen hat.
+
+Dies geschieht einfach mit den \lstinline{InfoWindow}-Methoden \lstinline{open} und \lstinline{close}, die zwei Javascript \lstinline{Timeouts}\footnote{Siehe \href{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}} orchestrieren, die dafür sorgen, dass das \lstinline{InfoWindow} von Google Maps nach 500 Millisekunden nativ geschlossen oder geöffnet wird.
+Die Orchestrierung lässt sich in Form des folgenden Flussdiagramms schematisieren:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{flow_diagram_close_infowindow}
+  \caption{flow diagramm der Verwaltung von Intervallen, die das Schließen und Öffnen eines \lstinline{InfoWindow} ermöglichen}
+  \label{fig:flow_diagram_close_infowindow}
+\end{figure}
+
+\subsubsection{reiche Schnittstellen in reinem \ac{HTML} und \ac{CSS}}
+
+Das Popup sollte in der Lage sein, eine gestapelte Statusleiste der verschiedenen Elemente, die einen Cluster bilden, anzuzeigen.
+Dies muss bei der Instanziierung des \lstinline{InfoWindow} statisch generiert werden.
+Die Klasse \lstinline{ClusterWindowHelpers} besitzt zu diesem Zweck eine statische Methode \lstinline{renderStyles}, die die Styles der Stacked Bar enthält, und eine Methode \lstinline{renderStackedBar}, die sich um die Erzeugung eines HTML-Elements \lstinline{div} kümmert, das so viele Child \lstinline{div} enthält wie Bars anzuzeigen sind, mit einer Größe in Prozent der Elemente, die es repräsentieren.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Implementieren der statischen Methode \lstinline{renderStackedBar}},
+  captionpos=b,
+  label={lst:methode_renderStackedBar}
+]
+static renderStackedBar = (data: {fire: any[]; offline: any[]; maintenance: any[]; safe: any[]}): string => {
+  const total = data.fire.length + data.offline.length + data.maintenance.length + data.safe.length
+
+  const percentage = (amount: number): number => (amount * 100) / total
+
+  const bars: string[] = []
+  Object.keys(data).forEach(id => {
+    const length = data[id].length
+    if (length > 0)
+      bars.push(`<div class="${id}" style=\"width: ${percentage(length).toFixed(2)}%\"></div>`)
+  })
+
+  return `
+  <div class="stacked-bar">
+    ${bars.join("")}
+  </div>
+  `
+}
+\end{lstlisting}
+
+Ein Collapse-System ist notwendig, damit bei einem Klick mehr Details zu einem bestimmten Element angezeigt werden.
+Glücklicherweise ist es möglich, eine solche Schnittstelle in reinem \ac{HTML} mithilfe des \lstinline{details}-Tags\footnote{Siehe \href{https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details}{https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details}} zu implementieren.
+
+Mit dem folgenden vereinfachten HTML-Markup können Sie eine Liste der Sensoren anzeigen, die gewartet werden müssen, wenn Sie auf ihren Titel klicken, wie in der Abbildung \ref{fig:map_sensors_window} gezeigt.
+
+\begin{lstlisting}[
+  language=html,
+  caption={Vereinfachtes \ac{HTML}-Markup für die Verwendung des Tags \lstinline{details} im Inhalt eines \lstinline{InfoWindow}},
+  captionpos=b,
+  label={lst:html_details}
+]
+<details style="border-color: #E2CB68;">
+  <summary>
+    <h2>
+      <b>2</b> devices needs maintenance
+    </h2>
+  </summary>
+
+  <ul>
+    <li><b>Eberswalde SN ofUAI</b></li>
+    <li><b>Eberswalde SN 23JpG</b></li>
+  </ul>
+</details>
+\end{lstlisting}
+
