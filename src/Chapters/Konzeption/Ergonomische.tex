@@ -113,7 +113,7 @@ Das Gefahren-Favicon wird auch ein wenig von dem Standard-Favicon abweichen, so 
   \label{fig:app_favicon_danger}
 \end{figure}
 
-\subsection{Anwendungsanpassung und Lokalisierung}
+\subsection{Anwendungsanpassung und Lokalisierung} \label{sec:conceptionLocale}
 Um dem Nutzer ein besseres Erlebnis zu bieten, ist es wichtig, dass sich die Benutzeroberfläche an den Nutzer anpasst und nicht umgekehrt.
 Eine Anwendung sollte ein Werkzeug sein und nicht eine Einschränkung für den Nutzer.
 Daher ist es sehr wichtig, dass sich die Schnittstelle automatisch anpasst oder angepasst werden kann, wo kulturelle Unterschiede auftreten.
@@ -142,7 +142,8 @@ Die verschiedenen Optionen werden zwischen dem metrischen und dem imperialen Sys
 Die Benutzeroberfläche sollte in der Lage sein, automatisch zu erkennen, welches Messsystem verwendet wird.
 In einem zweiten Schritt sollte der Benutzer eine Seite mit Präferenzen erhalten, auf der er auswählen kann, welche Formate er für die verschiedenen Datentypen verwenden möchte.
 Die automatische Erkennung erfolgt durch die Erkennung der Sprache des Browsers des Nutzers.
-Wenn die Standardsprache amerikanisches Englisch ist, das in RFC5646 \cite{rfc5646} als \textit{en-US} bezeichnet wird, dann wird das imperiale System verwendet. Im umgekehrten Fall wird das metrische System verwendet.
+Wenn die Standardsprache amerikanisches Englisch oder British English ist, das in RFC5646 \cite{rfc5646} als \textit{en-US} und \textit{en-GB} bezeichnet wird, dann wird das imperiale System verwendet.
+Im umgekehrten Fall wird das metrische System verwendet.
 
 Die Konvertierung zwischen den verschiedenen Größenordnungen von Entfernungen und Flächen sollte automatisch von der Schnittstelle vorgenommen werden, um dem Nutzer die relevanteste Darstellung zu bieten.
 Dies ist recht einfach zu bewerkstelligen, da alle Daten in Metern für die Entfernungen und in Quadratmetern für die Einheiten angegeben sind.
@@ -160,6 +161,7 @@ Die verschiedenen Größenordnungen und ihre jeweiligen Einheiten in Abhängigke
     >= 1000 Metern                & Kilometer (km)                                  & Meilen (mile)  \\
   \end{tabular}
   \caption{Einheit, die je nach Größenordnung der Entfernung verwendet wird}
+  \label{table:metric_order_magnitude}
 \end{table}
 
 \begin{table}[H]

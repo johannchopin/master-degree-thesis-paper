@@ -135,6 +135,85 @@ private initFireWatcher = (): void => {
 \begin{figure}[H]
   \centering
   \includegraphics[width=10cm]{class_diagramm_favicon_service}
-  \caption{DKlassendiagramm für den Service \lstinline{FaviconService}}
+  \caption{Klassendiagramm für den Service \lstinline{FaviconService}}
   \label{fig:class_diagramm_favicon_service}
 \end{figure}
+
+\subsection{Pipe zur Lokalisierung von Distanzen}
+
+Der Benutzer muss in der Lage sein, auszuwählen, in welchem metrischen Format er die Entfernungen auf seiner Benutzeroberfläche sehen möchte.
+Die Anwendung wird einen Standardwert zwischen metrisch und imperial zuweisen, den der Benutzer auf einer Einstellungsseite unter \lstinline{/me/settings} ändern kann.
+
+Genau wie im Abschnitt \ref{sec:consistent_interface} erwähnt, erzwingt ein Mangel an Zeit und Ressourcen die Datenspeicherung auf der Clientseite über den \lstinline{localstorage}.
+Der bereits bestehende Service \lstinline{UserService} wird dafür zuständig sein, die Benutzereinstellungen zu initialisieren, zu speichern und wieder auszugeben.
+
+\subsubsection{Speicherung und Wiedergabe von Daten}
+
+\lstinline{UserService} wird die Benutzereinstellungen in einem Javascript-Objekt speichern, das derzeit nur aus einer \lstinline{unitSystem}-Eigenschaft besteht.
+Er speichert dieses Objekt unverändert als Zeichenkette, die er mithilfe der Methode \lstinline{JSON.stringify} generiert und mithilfe der Methode \lstinline{JSON.parse} parst.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Methode von \lstinline{UserService}, die das Lesen und Speichern der Benutzereinstellungen im \lstinline{localStorage} ermöglicht},
+  captionpos=b
+]
+setLocalSettings = (settings: Partial<UserSettings>): void => {
+  localStorage.setItem(UserService.SETTINGS_KEY, JSON.stringify({
+    ...DEFAULT_SETTINGS,
+    ...settings
+  }))
+}
+
+getStoredSettings = (): string | null => {
+  return localStorage.getItem(UserService.SETTINGS_KEY)
+}
+
+getLocalSettings = (): UserSettings => {
+  const storedSettings = this.getStoredSettings()
+
+  if (storedSettings) {
+    try {
+      return JSON.parse(storedSettings)
+    } catch (error) {
+      this.setLocalSettings(DEFAULT_SETTINGS)
+      return DEFAULT_SETTINGS
+    }
+  }
+  return DEFAULT_SETTINGS
+}
+\end{lstlisting}
+
+\subsubsection{Festlegung der Standardauswahl}
+
+Leider kann der Browser in seiner jetzigen Form nicht mit Javascript erkennen, welche Art von Messung der Benutzer verwendet.
+Eine naive Lösung, die aber bei den meisten Dryad-Kunden funktionieren wird, ist die Erkennung der Browsersprache, wie im Abschnitt \ref{sec:conceptionLocale} beschrieben.
+
+Benutzer mit der Browsersprache \textit{en-US} oder \textit{en-GB} haben eine hohe Wahrscheinlichkeit, dass sie das imperiale System verwenden.
+Alle anderen werden das metrische System als Standard verwenden.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Methode, die die Standardmaßeinheit abhängig von der Browsersprache festlegt},
+  captionpos=b
+]
+getDefaultSettings = (): UserSettings => {
+  const preferedLanguage = navigator.language
+  const settings: UserSettings = {...DEFAULT_SETTINGS}
+
+  if (preferedLanguage === 'en-US' || preferedLanguage === 'en-GB') {
+    settings.unitSystem = "imperial"
+  }
+
+  return settings
+}
+\end{lstlisting}
+
+Natürlich ist diese Technik der Standardbestimmung hypothetisch und erfordert, dass der Benutzer die Möglichkeit hat, diese Präferenz schnell zu ändern, was auf der Seite Settings der Fall ist.
+
+\subsubsection{Umrechnung von metrischem zu imperialem System}
+
+Jede Entfernung der Dryads-Systeme wird in der Einheit Meter gespeichert.
+Es genügt also, eine Custom Pipe \lstinline{DistancePipe} zu erstellen, die als Parameter eine Entfernung in Metern annimmt und mithilfe des Service \lstinline{UserService} einen Wert im bevorzugten System des Benutzers zurückgibt.
+Dieser muss auch die Größenordnung der Anfangsdistanz berücksichtigen, um einen relevanten Wert anzuzeigen, wie in der Tabelle \ref{table:metric_order_magnitude} näher erläutert.
+
+Die vollständige Implementierung der \lstinline{DistancePipe} kann im Appendix \ref{lst:distancePipe} eingesehen werden.
