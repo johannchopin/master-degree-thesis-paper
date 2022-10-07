@@ -217,3 +217,27 @@ Es genügt also, eine Custom Pipe \lstinline{DistancePipe} zu erstellen, die als
 Dieser muss auch die Größenordnung der Anfangsdistanz berücksichtigen, um einen relevanten Wert anzuzeigen, wie in der Tabelle \ref{table:metric_order_magnitude} näher erläutert.
 
 Die vollständige Implementierung der \lstinline{DistancePipe} kann im Appendix \ref{lst:distancePipe} eingesehen werden.
+
+\subsection{Bedingte Anzeige von Seitenabschnitten}
+
+Die Anzeige der Sensorplanungsschnittstelle, wie sie im Abschnitt \ref{sec:conception_tunnel} beschrieben wurde, erfolgte schnell mit der Verwaltung von drei dynamischen Variablen, die den drei in \ref{fig:planing_v2_state_diagram} dargestellten Bedingungen entsprachen, und der Verwendung von Angular \lstinline{ng-template}\footnote{Siehe \href{https://angular.io/api/core/ng-template}{https://angular.io/api/core/ng-template}} und \lstinline{ng-container}\footnote{Siehe \href{https://angular.io/api/core/ng-container}{https://angular.io/api/core/ng-container}}.
+
+\begin{lstlisting}[
+  language=html,
+  caption={Verwendung von Containers und Templates, die die Isolierung von Schnittstellenelementen und deren bedingtes Rendering ermöglichen.},
+  captionpos=b
+]
+<ng-container *ngIf="addDeviceFlowStarted; else addDeviceButton">
+  <p-dropdown
+    [options]="deviceTypes"
+    optionLabel="name"
+    required="true"
+    placeholder="Choose device type"
+  ></p-dropdown>
+  ...
+</ng-container>
+
+<ng-template #addDeviceButton>
+  <button (click)="addDeviceFlowStarted = true">Add devices to packets</button>
+</ng-template>
+\end{lstlisting}
