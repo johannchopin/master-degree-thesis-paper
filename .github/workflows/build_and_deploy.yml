@@ -17,10 +17,11 @@ jobs:
         with:
           working_directory: src
           root_file: 08-Thesis_CHOPIN.tex
-          post_compile: "mkdir build && mv 08-Thesis_CHOPIN.pdf build"
-
-      - name: 🚀 Deploy
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+      - name: 🚀 Commit builded PDF
+        uses: EndBug/add-and-commit@v9
         with:
-          branch: gh-pages
-          folder: src/build
+          message: '🚀 auto-commit pdf'
+          add: '08-Thesis_CHOPIN.pdf'
+          new_branch: 'build'
+          fetch: false
+          push: origin build --set-upstream --force
