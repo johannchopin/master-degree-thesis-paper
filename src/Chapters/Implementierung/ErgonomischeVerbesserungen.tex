@@ -79,3 +79,62 @@ Diese Illustrationen können dann leicht in andere Seiten-Templates integriert w
 </div>
 \end{lstlisting}
 
+
+\subsection{Service für blinkende Favicons}
+
+Die Animation des Favicons der Anwendung wird mithilfe eines Angular Service verwaltet, damit es von allen Komponenten der Anwendung konsumiert werden kann.
+Dazu werden die beiden Favicons \textit{default.icon} und \textit{danger.ico} im Ordner \textit{src/assets/favicons} gespeichert.
+Der \textit{assets}-Ordner in einem Angular-Projekt wird von der Rückgabe so bedient, dass Sie einfach auf die Favicons in der Anwendung zugreifen können, indem Sie den URI \textit{/favicons/default.ico} verwenden.
+Der benutzerdefinierte Dienst \lstinline{FaviconService} wird den Dienst \lstinline{NgxFaviconService} verwenden, um einfach den Favicon-Link der Anwendung mithilfe seiner \lstinline{setCustomFavicon}-Methode zu bearbeiten.
+
+Dieser verfügt über eine \lstinline{blink}-Methode, mit der zwei Favicons, die als Parameter übergeben werden, mithilfe eines JavaScript-Timers setInterval\footnote{Siehe \href{https://developer.mozilla.org/en-US/docs/Web/API/setInterval}{https://developer.mozilla.org/en-US/docs/Web/API/setInterval}} abwechseln können.
+Die Methode \lstinline{stopBlink} stoppt diesen Timer.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Implementierung und Verwendung der \lstinline{blink}-Methode des Service \lstinline{FaviconService}},
+  captionpos=b
+]
+private stopBlink(): void {
+  clearInterval(this.blinkInterval)
+}
+
+private blink(faviconA: Favicons, faviconB: Favicons): void {
+  this.blinkInterval = setInterval(() => {
+    const faviconToShow = this.favicon === faviconA ? faviconB : faviconA
+    this.set(faviconToShow)
+  }, this.BLINK_INTERVAL)
+}
+
+public setDanger(blink = true): void {
+  if (blink)
+    this.blink(this.favicon, Favicons.DANGER)
+  else
+    this.set(Favicons.DANGER)
+}
+\end{lstlisting}
+
+Der Service verbindet sich über ein Observable mit dem Brandmeldekanal und ruft die Methode lstinline{setDanger} auf, sobald ein Brand auftritt:
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Methode, die sich mit den Alert Observables verbindet und die Anzeige von Favicons steuert},
+  captionpos=b
+]
+private initFireWatcher = (): void => {
+  this.subscription.add(this.oss
+    .fireAlerts$()
+    .subscribe((fireAlerts: Map<string, UpMessage[]>) => {
+      const isFireDetected = fireAlerts.size > 0
+      if (isFireDetected) this.setDanger()
+      else this.setDefault()
+    }))
+}
+\end{lstlisting}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=10cm]{class_diagramm_favicon_service}
+  \caption{DKlassendiagramm für den Service \lstinline{FaviconService}}
+  \label{fig:class_diagramm_favicon_service}
+\end{figure}
