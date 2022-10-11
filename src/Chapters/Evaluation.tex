@@ -1,0 +1,69 @@
+\chapter{Evaluation}
+
+In diesem Kapitel wird bewertet, inwieweit die im Abschnitt \ref{sec:targets} gestellten Anforderungen von den verschiedenen Implementierungen, die im Kapitel \ref{chap:implementation} vorgestellt wurden, erfüllt wurden.
+Wird detailliert auf die Usability der neuen interaktiven Karte, die allgemeine Verbesserung der Nutzererfahrung und die Erreichung der Ziele der Thesis eingehen.
+
+\section{Nutzbarkeit der interaktiven Karte}
+
+Nach dem Einsatz der neuen interaktiven Karte in der \textit{staging} Instanz der Anwendung wurde eine Sitzung mit Benutzertests durchgeführt, die den im Abschnitt \ref{sec:analyse_usability_tests} beschriebenen Tests ähnlich waren.
+Diese Sitzung konzentrierte sich auf das Erreichen der Ziele der Karte.
+
+Die Ergebnisse des \ac{SUS}-Scores, der an 6 Personen außerhalb des Dryad-Teams bewertet wurde, können in der folgenden Tabelle eingesehen werden.
+
+\begin{table}[H]
+  \begin{tabular}{p{0.4\linewidth} |p{0.3\linewidth}|p{0.3\linewidth}}
+    Thema                                             & \ac{SUS}-Bewertungen & Entsprechendes Adjektiv                 \\ \hline\hline
+
+    \textbf{Gerätefehlererkennung}                    & 92.3                 & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Offline-Sensorerkennung}                  & 97.2                 & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Erschwinglichkeit des Sicherheitsdesigns} & 100                  & Das Beste, was man sich vorstellen kann \\\hline
+    \textbf{Ablauf des Feueralarms}                   & 97.2                 & Das Beste, was man sich vorstellen kann
+  \end{tabular}
+  \caption{Ergebnisse der \ac{SUS}-Bewertungen der neuen interaktiven Karte}
+\end{table}
+
+Diese Ergebnisse sind sehr gut und wurden durch Kommentare unterstützt, in denen die verbesserte Leistung beim Rendern und Erkunden der verschiedenen Orte im Vergleich zur vorherigen Karte gelobt wurde.
+Im Anschluss an diese Benutzertests wurde die interaktive Karte auf die Produktionsinstanz der Anwendung übertragen.
+
+\section{Verbesserung der Nutzererfahrung}
+
+Leider reichte die Zeit nicht aus, um nach sechs Monaten Entwicklungsforschung quantitative Benutzertests der Benutzeroberfläche durchzuführen.
+Die mündlich geäußerten Qualitätsurteile der Tester der neuen Karte wiesen vor allem auf die folgenden Verbesserungen hin:
+
+\begin{itemize}
+  \item reichhaltigere und schnellere Navigation durch die verschiedenen Seiten der Anwendung. Dies wurde durch zwei Navigationssysteme (Hauptmenü und breadcrumb) und eine einheitliche Struktur der Seitenorganisation (entsprechend der \ac{REST}-Konvention zur Benennung von \ac{URI}s) erreicht.
+  \item relevantere Entdeckung von Features. Es war in der Tat sehr erstaunlich, dass die Nutzer bei diesem Austausch bestimmte Bereiche der App entdeckten. Die Verwendung von Textlabels anstelle von einfachen Icons und die Untertunnelung der Benutzeroberfläche scheint den Benutzern zu helfen, zu verstehen, was sie in einem bestimmten Anwendungskonzept tun können.
+  \item die Möglichkeit, den Status eines oder mehrerer \textit{Sites} von der Karte aus schnell zu erkennen. Die Nutzer schätzen es, dass sie die Karte vergrößern und den Status aller Sensoren oder \textit{Sites} schnell über das Informations-Popup abrufen können.
+\end{itemize}
+
+\section{Zielerreichung}
+
+Im Abschnitt \ref{sec:targets} wurden die Ziele dieser Thesis in Bezug auf die Webanwendung von Dryad erläutert.
+In diesem Abschnitt wird erläutert, inwieweit die Ziele am Ende der sechsmonatigen Arbeit erreicht wurden.
+
+\subsection{Identifizierung von ergonomischen Mängeln}
+
+Eine der ersten Aufgaben, die durchgeführt wurde, war eine ergonomische Inspektion, die auf den Kriterien von Bastian und Scapin basierte. Dabei wurde eine große Anzahl von Inkonsistenzen in der aktuellen Benutzeroberfläche entdeckt, die das Nutzererlebnis wahrscheinlich einschränken.
+Der Zweck dieser Aufgabe war eine Liste von Tickets, die auf der Schnittstelle zu erledigen waren, die im ClickUp-Tool priorisiert und zugewiesen wurden.
+Ein Teil dieser Tickets wurde während meines sechsmonatigen Praktikums erstellt und positiv bewertet.
+Der Rest der Tickets wurde kurz vor meiner Abreise unter den verschiedenen Mitgliedern des Cloud-Teams aufgeteilt.
+
+\subsection{Durchführung von Benutzertests}
+
+Um die Hypothesen zu ergonomischen Mängeln zu stützen, wurden Benutzertests durchgeführt, um den Erwartungen und Frustrationen der Benutzer so nahe wie möglich zu kommen.
+Dies ermöglichte es, gute und schlechte Aspekte der Anwendung zu erkennen und eine konkretere Roadmap für die zukünftige Entwicklung der Karte zu erstellen.
+Nach der erfolgreichen Implementierung des sensibelsten Punktes der Benutzerfreundlichkeit, der interaktiven Karte, wurde eine zweite Runde von Benutzertests durchgeführt, die eine deutliche Verbesserung der quantitativen \ac{SUS}-Bewertung ergaben.
+Die Diskussionen mit den Nutzern waren auch ein guter Weg, um Ideen zu sammeln, die bislang nicht in Betracht gezogen wurden, und so die Planung eines größeren Features zu ermöglichen, das in User Stories definiert wurde.
+
+\subsection{Entwicklung einer interaktiven Karte}
+
+Die Verbesserung des Verhaltens der interaktiven Karte war eine große Veränderung in der Nutzbarkeit der Anwendung.
+Die neue Implementierung erfüllt die Erwartungen, da sie auf jeder Zoomstufe sofort rendern kann und über eine reichhaltige Cluster-Schnittstelle verfügt, die eine schnelle Erkennung von Problemen an einem der \textit{Sites} ermöglicht.
+Die Verbesserung des \ac{SUS}-Scores durch die Nutzer und die Zufriedenheit mit der Implementierung der Codelogik durch meinen Senior Developer Manager scheint auf eine gute Verbesserung der Verwaltung von Sensoren und \textit{Sites} auf interaktiven Google Maps hinzudeuten.
+Die vollständige Integration des Backends muss jedoch noch erfolgen, damit der Prototyp fertiggestellt werden kann.
+
+\subsection{Datenpräsentation in Stresssituationen}
+
+Für die Dryad-Teams war es sehr interessant, genauer zu verstehen, wie ein Waldbrandeinsatz aus der Sicht eines Feuerwehrmanns funktioniert.
+Die App ist zwar nicht für sie gedacht, aber sie wird dennoch relevante Informationen enthalten, um die Zusammenarbeit zwischen Feuerwehrleuten und Kunden zu verbessern.
+Die Ergebnisse des Fragebogens halfen dabei, die guten Punkte der aktuellen Schnittstelle zu identifizieren und gleichzeitig Vorschläge für innovative Features für zukünftige Versionen hinzuzufügen.
