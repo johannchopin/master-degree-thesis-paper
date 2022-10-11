@@ -1,0 +1,47 @@
+\chapter{Zusammenfassung und Ausblick}
+
+\section{Zusammenfassung}
+
+Diese Thesis konzentrierte sich auf die allgemeine Verbesserung der Benutzererfahrung der Webanwendung des Startups Dryad, die es ermöglicht, hunderte von Sensoren im Wald zu lokalisieren und zu verwalten, um Brände sehr schnell zu erkennen.
+Dazu mussten wir zunächst die Mängel und Bedürfnisse der Nutzer auswerten, um Verbesserungsvorschläge zu machen, und die Frage wiederholen, um das Produkt ständig zu verbessern.
+Dies geschah mithilfe von Benutzertests, die auf Fragen und quantitativen Bewertungen basierten, um durch den Vergleich der \ac{SUS}-Werte einen Verbesserungskoeffizienten zu erhalten.
+Es wurde auch eine ergonomische Inspektion durchgeführt, die sich auf die Kriterien von Bastian und Scapin stützte und eine umfassende Liste von Verbesserungsmöglichkeiten erstellte, um die Benutzerfreundlichkeit der Schnittstelle zu erhöhen.
+Hinzu kommt ein Fragebogen für die weltweite Gemeinschaft der Feuerwehrleute, um zu versuchen zu verstehen, wie die Teams vor, während und nach einem Waldbrand arbeiten und vor allem, welche Daten am entscheidendsten sind.
+
+Diese Forschung hat einige interessante Ergebnisse hervorgebracht, die es ermöglichen, eine Roadmap zu erstellen, die nicht nur geliefert, sondern auch priorisiert wird.
+Von da an konzentrierte sich die Arbeit auf die Standardisierung der Seitennavigation der Anwendung unter einem REST-Standard, die Implementierung ergonomischer Hilfen zur Erkennung von Warnmeldungen und die Anpassung der Anwendung und schließlich die Neuimplementierung des Verhaltens der interaktiven Kartenkomponente.
+Die mit der Schnittstelle verbundenen Implementierungen wurden mit dem Angular-Framework durchgeführt, das es ermöglicht, eine reaktive und dynamische Anwendung sehr schnell und einfach über die Websprache Javascript hinaus zu entwerfen.
+Die Ideenfindung und Konzeption erfolgte immer in enger Zusammenarbeit mit dem gesamten Team unter Verwendung von Methoden wie Brainstorming, Lotusblossum oder Question Board.
+
+Dies ermöglichte es, eine intuitivere Anwendung zu erstellen, da die Position der Seite mithilfe einer breadcrumb-Komponente leichter erkannt werden kann und der Seitentitel hervorgehoben wird.
+Ein Tunneling-Design-Konzept wurde eingeführt, um zu verhindern, dass der Nutzer die Benutzeroberfläche und ihre Optionen selbst entdecken muss, indem er Verwirrung vermeidet.
+Außerdem wurden große Anstrengungen unternommen über die Anpassung desselben, um das Erlebnis für den Nutzer persönlicher zu gestalten.
+Eine Reflexion über das Verhalten von interaktiven Karten führte schließlich dazu, dass Sensoren und \textit{Sites} auf allen Zoomstufen mit Hilfe von Clustern und Informations-Popups verwaltet werden.
+Ein Redesign der API und zwei Implementierungen der Kartenlogik waren notwendig, bevor eine wiederverwendbare Komponente der Karte entwickelt werden konnte, die das Hinzufügen von Features und ein flüssiges Erlebnis ermöglichte.
+
+Diese Arbeit wurde mit einer unglaublichen Verbesserung der Benutzbarkeit der Benutzeroberfläche und insbesondere der interaktiven Karte belohnt, wie die Benutzer in den Benutzertests berichteten.
+Die gute Kritik des Teams am produzierten Code und dessen Übernahme durch andere Mitglieder lässt auf eine schöne Zukunft für die verbleibende Roadmap schließen.
+
+
+\section{Ausblick}
+
+Während der Zeit dieser Thesis wurden viele Funktionen implementiert, aber leider wurden keine Einheits- oder Integrationstests geschrieben.
+Um Bugs und Regressionen zu vermeiden und die Wartbarkeit des Codes zu gewährleisten, ist es wichtig, für den gesamten Quellcode der Anwendung Einheitstests und End-to-End-Tests zu schreiben.
+
+Obwohl die in dieser Thesis getroffenen Entscheidungen auf den Ergebnissen von Benutzertests und Fragebögen basieren, könnte die hohe Teilnehmerzahl nicht alle potenziellen Kunden von Dryad widerspiegeln.
+In der nächsten Entwicklungsphase der Anwendung wäre es sinnvoll, sich auf das Feedback einer größeren Anzahl verschiedener Kunden zu stützen.
+
+In Bezug auf die Karte wäre es interessant gewesen, ihr Verhalten mit einer großen Anzahl von \textit{Sites}, die aus Hunderten von Sensoren bestehen, zu testen.
+In der Zwischenzeit muss die neue API des Backends implementiert werden, wobei die im Abschnitt \ref{sec:API_bigdata} erwähnte Strategie einzuhalten ist.
+Außerdem wird eine lokalisiertere Logik erwartet, um Kartenelemente bei einer Echtzeitänderung neu zu zeichnen.
+Nur das betroffene Element sollte aktualisiert werden und nicht die gesamte Karte.
+
+Die Berechnung der Cluster bei einer Bewegung der Karte erfolgt in demselben Thread, der auch die gesamte Schnittstelle verwaltet, was sich aus dem Standarddesign der Browser ergibt.
+Es wäre sinnvoll, diese Art von Berechnungen in einem anderen Thread durchzuführen, indem Sie einen Webworker verwenden, der Javascript-Code außerhalb des Hauptthreads ausführen kann.
+
+Ein Beispiel für eine kundenseitige Anpassung wurde für die Anzeige von Entfernungen vorgeschlagen, aber viele andere Parameter müssen konfigurierbar gemacht und auch in einer Cloud-Lösung gespeichert werden.
+Auf diese Weise wird die Sitzung eines Nutzers zwischen einem Computer und einem Telefon nahezu identisch sein.
+Gute Beispiele sind die Wahl der Sprache, die Anordnung eines Dashboards und die Einstellung der Empfänger von Alarmmeldungen.
+
+Das Konzept des Tunneling, das im Abschnitt Test entwickelt wurde, kann auf viele andere Seiten angewendet werden.
+Auch die Implementierungslogik könnte auf einer \textit{State Machine} basieren, die eine bessere Vorhersagbarkeit ermöglicht und fortgeschrittene Werkzeuge zur Visualisierung der Programmlogik bietet.
