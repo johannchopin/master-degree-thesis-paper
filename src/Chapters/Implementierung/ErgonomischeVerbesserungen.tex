@@ -149,7 +149,7 @@ Der bereits bestehende Service \lstinline{UserService} wird dafür zuständig se
 
 \subsubsection{Speicherung und Wiedergabe von Daten}
 
-\lstinline{UserService} wird die Benutzereinstellungen in einem Javascript-Objekt speichern, das derzeit nur aus einer \lstinline{unitSystem}-Eigenschaft besteht.
+\lstinline{UserService} wird die Benutzereinstellungen in einem JavaScript-Objekt speichern, das derzeit nur aus einer \lstinline{unitSystem}-Eigenschaft besteht.
 Er speichert dieses Objekt unverändert als Zeichenkette, die er mithilfe der Methode \lstinline{JSON.stringify} generiert und mithilfe der Methode \lstinline{JSON.parse} parst.
 
 \begin{lstlisting}[
@@ -185,7 +185,7 @@ getLocalSettings = (): UserSettings => {
 
 \subsubsection{Festlegung der Standardauswahl}
 
-Leider kann der Browser in seiner jetzigen Form nicht mit Javascript erkennen, welche Art von Messung der Benutzer verwendet.
+Leider kann der Browser in seiner jetzigen Form nicht mit JavaScript erkennen, welche Art von Messung der Benutzer verwendet.
 Eine naive Lösung, die aber bei den meisten Dryad-Kunden funktionieren wird, ist die Erkennung der Browsersprache, wie im Abschnitt \ref{sec:conceptionLocale} beschrieben.
 
 Benutzer mit der Browsersprache \textit{en-US} oder \textit{en-GB} haben eine hohe Wahrscheinlichkeit, dass sie das imperiale System verwenden.
