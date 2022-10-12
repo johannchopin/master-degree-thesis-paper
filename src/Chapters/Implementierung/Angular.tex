@@ -132,3 +132,35 @@ export class UsersComponent implements OnInit {
 Ein Angular-Dekorator ist eine Funktion, mit der Metadaten an eine Klassendeklaration, eine Methode, einen Accessor, eine Eigenschaft oder einen Parameter angehängt werden können.
 Wie bereits in den Beispielen zu sehen ist, verwendet Angular Dekoratoren, um der Klasse, der Methode oder der Eigenschaft Metadaten zur Verfügung zu stellen.
 Beispielsweise müssen Komponenten wissen, wo sie ihre Vorlage finden können. Dies ist möglich, indem der Parameter \lstinline{templateUrl} des \lstinline{@Component}-Dekorators verwendet wird (siehe \ref{lst:component_example}).
+
+\subsection{Pipe}
+
+Im Angular-Framework sind Pipes einfache Funktionen, die in Template-Ausdrücken verwendet werden können, um einen Eingabewert zu akzeptieren und einen transformierten Wert zurückzugeben.
+Eine Pipe ist eine Klasse, die aus einem \lstinline{Pipe}-Dekorator erstellt wird, der aus einer \lstinline{transform}-Methode besteht\footnote{Siehe \href{https://angular.io/guide/pipes}{https://angular.io/guide/pipes}}.
+ein konkretes Beispiel ist eine \lstinline{SquarePipe}, mit der man leicht eine Zahl in einer Tempalte quadrieren kann.
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Definition einer einfachen angularen Pipe \lstinline{SquarePipe}},
+  captionpos=b,
+  label={lst:pipe_example}
+]
+@Pipe({ name: 'square' })
+export class SquarePipe implements PipeTransform {
+  transform(value: number): number {
+    return value * value
+  }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[
+  language=javascript,
+  caption={Verwendung der in \ref{lst:pipe_example} definierten \lstinline{SquarePipe}},
+  captionpos=b
+]
+<p>{{ 4 | square}}</p>
+//OUTPUT
+<p>16</p>
+\end{lstlisting}
+
+Ein weiterer Vorteil von Pipes ist ihre Fähigkeit, andere Pipes und Services zu nutzen.

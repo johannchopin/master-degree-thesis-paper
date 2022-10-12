@@ -103,7 +103,7 @@ Die Tatsache, dass es zwei mögliche Ebenen von Clustern zwischen \textit{Sites}
 Wir müssen also die Clustering-Logik selbst entwickeln, indem wir den \ref{fig:map_clustering_flow} flow implementieren.
 
 Es gibt viele Algorithmen für das Clustering von Geopunkten, aber um das Rad nicht neu zu erfinden, wird das mapbox \textit{supercluster}\footnote{Siehe \href{https://github.com/mapbox/supercluster}{https://github.com/mapbox/supercluster}} project verwendet, das im Hintergrund von Google Maps eingesetzt wird.
-Diese Open-Source-Javascript-Bibliothek ist sehr populär geworden, da sie Punkte unter dem GeoJSON-Datenstandard\cite{rfc7946} verwaltet und eine unglaubliche Leistung beim Clustern von Millionen von Punkten mit Hilfe eines \textit{gierigen hierarchischen Clustering}-Algorithmus\cite{supercluster} erzielt.
+Diese Open-Source-JavaScript-Bibliothek ist sehr populär geworden, da sie Punkte unter dem GeoJSON-Datenstandard\cite{rfc7946} verwaltet und eine unglaubliche Leistung beim Clustern von Millionen von Punkten mit Hilfe eines \textit{gierigen hierarchischen Clustering}-Algorithmus\cite{supercluster} erzielt.
 
 Die Logik hinter diesem Algorithmus besteht darin, die nächstgelegenen Punkte zu bestimmten Punkten anhand eines Radius zu berechnen, um einen neuen Clusterpunkt auf der tiefsten Zoomstufe der interaktiven Karte zu bilden (18 im Fall von Google Maps in der Anwendung von dryad).
 Der Algorithmus wiederholt die Operation bei der obersten Zoomstufe mit den Clusterpunkten, bis er bei Zoom 0 angekommen ist.
@@ -311,7 +311,7 @@ Das folgende Klassendiagramm zeigt die Architektur des \ac{POC}, in dem die Verw
 
 Wie im Abschnitt \ref{sec:implementation_functional} beschrieben, muss die Instanziierung eines Markers auf der Karte für jeden neu anzuzeigenden Sensor ausgeführt werden, auch wenn dieser bereits zuvor angezeigt wurde.
 Das ist auf unseren Tools kein Leistungsproblem, aber es könnte auf einem viel weniger leistungsfähigen Mobiltelefon sein, wie es bei einigen Kunden in der Welt üblich ist.
-Um diese unnötige Berechnung zu vermeiden, werden die instanziierten Marker jeder \textit{Site} und jedes \textit{Site}-Clusters (\lstinline{SiteMarker}, \lstinline{SitesCluster}) in einem Javascript-Objekt mit einem Schlüssel gespeichert, der auf die gleiche Weise wie im Abschnitt \ref{sec:clustern_caching} generiert wird.
+Um diese unnötige Berechnung zu vermeiden, werden die instanziierten Marker jeder \textit{Site} und jedes \textit{Site}-Clusters (\lstinline{SiteMarker}, \lstinline{SitesCluster}) in einem JavaScript-Objekt mit einem Schlüssel gespeichert, der auf die gleiche Weise wie im Abschnitt \ref{sec:clustern_caching} generiert wird.
 Die gleiche Logik wird für die Marker der einzelnen Sensoren und Sensorcluster (\lstinline{DeviceMarker}, \lstinline{DevicesCluster}) verwendet.
 
 Auf diese Weise wird jeder Marker für jede unterschiedliche Zoomstufe nur einmal instanziiert.
@@ -377,7 +377,7 @@ class SiteMarker extends Marker implements Focusable {
 
 Die Erstellung eines Informationskastens, wie im \ref{fig:map_sensors_window_collapsed} gezeigt, wird durch das Google Maps API nicht einfach gemacht.
 Es gibt nur eine Klasse \lstinline{InfoWindow}, mit der HTML-Inhalte in einem Bereich nach einer bestimmten Koordinate angezeigt werden können.
-Die Verwendung von Javascript-Code wird dadurch sehr erschwert und die Verwendung von Angular-Komponenten unmöglich gemacht.
+Die Verwendung von JavaScript-Code wird dadurch sehr erschwert und die Verwendung von Angular-Komponenten unmöglich gemacht.
 
 \subsubsection{Code-Architektur}
 
@@ -400,7 +400,7 @@ Die Klassen \lstinline{SitesClusterWindow} und \lstinline{DevicesClusterWindow},
 Um dem Nutzer ein flüssiges Erlebnis zu bieten, wird das Informationsfenster erst nach einer halben Sekunde geschlossen oder geöffnet.
 Dadurch wird vermieden, dass alle Popups beim bloßen Überfahren mit der Maus angezeigt werden und das Popup ständig neu geöffnet werden muss, wenn der Mauszeiger einen Pixel verlassen hat.
 
-Dies geschieht einfach mit den \lstinline{InfoWindow}-Methoden \lstinline{open} und \lstinline{close}, die zwei Javascript \lstinline{Timeouts}\footnote{Siehe \href{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}} orchestrieren, die dafür sorgen, dass das \lstinline{InfoWindow} von Google Maps nach 500 Millisekunden nativ geschlossen oder geöffnet wird.
+Dies geschieht einfach mit den \lstinline{InfoWindow}-Methoden \lstinline{open} und \lstinline{close}, die zwei JavaScript \lstinline{Timeouts}\footnote{Siehe \href{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout}} orchestrieren, die dafür sorgen, dass das \lstinline{InfoWindow} von Google Maps nach 500 Millisekunden nativ geschlossen oder geöffnet wird.
 Die Orchestrierung lässt sich in Form des folgenden Flussdiagramms schematisieren:
 
 \begin{figure}[H]

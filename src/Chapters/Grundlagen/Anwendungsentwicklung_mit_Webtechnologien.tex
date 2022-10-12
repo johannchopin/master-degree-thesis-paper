@@ -15,29 +15,29 @@ Eine Single Page Application ist ein Website-Design-Ansatz, bei dem der Inhalt j
   \label{fig:spa}
 \end{figure}
 
-\textbf{Pros:}
+\textbf{Vorteile:}
 
 \begin{itemize}
   \item Die traditionellen HTML-Seiten nehmen beim Hin- und Herbewegen zum Server viel Zeit in Anspruch. Dies erforderte das Nachladen der großen Menge ähnlicher Daten, während das neue SPA die Notwendigkeit der Kommunikation mit HTML-Tags zum Server mildert. SPA lädt nur einmal mit den HTML-Tags, während die nächsten Anfragen auf das teilweise Laden der Seite mittels AJAX und JSON erfolgen. Dies führt zu einer Einsparung von Bandbreite.
   \item Die SPA-Seite wird schneller geladen und benötigt aufgrund der geringeren Datentransaktion weniger Bandbreite. Das Seitendesign und UX werden besser und funktionieren erstaunlich gut mit den langsamen Verbindungen.
 \end{itemize}
 
-\textbf{Cons:}
+\textbf{Nachteile:}
 
 \begin{itemize}
-  \item Die traditionellen HTML-Seiten sind gut für den SEO, während die SPA schwer von den Benutzern gecrawlt werden kann, weil die Webcrawler nicht wissen, wie sie mit dem Javascript umgehen sollen. Die Lösung besteht darin, die roboterspezifische HTML-Seite zu kodieren, was wiederum zu Wartungsproblemen führen kann.
-  \item Manchmal braucht die SPA viel Zeit, um das Bündel aus CSS und Javascript zu laden, was das erste Laden der Seite verzögert.
+  \item Die traditionellen HTML-Seiten sind gut für den SEO, während die SPA schwer von den Benutzern gecrawlt werden kann, weil die Webcrawler nicht wissen, wie sie mit dem JavaScript umgehen sollen. Die Lösung besteht darin, die roboterspezifische HTML-Seite zu kodieren, was wiederum zu Wartungsproblemen führen kann.
+  \item Manchmal braucht die SPA viel Zeit, um das Bündel aus CSS und JavaScript zu laden, was das erste Laden der Seite verzögert.
 \end{itemize}
 
 \subsection{TypeScript}
 
-Die Entwicklung einer Webanwendung kommt heutzutage ohne Javascript kaum noch aus. Die Hegemonie dieser Sprache wird nicht mehr angezweifelt, und ihre Gemeinschaft ist eine der wichtigsten in der Welt der Webentwicklung, was sicherlich auf ihre inhärente Flexibilität zurückzuführen ist. Es hat jedoch einige Einschränkungen, wenn es um die Entwicklung komplexer Anwendungen geht, und aus diesem Grund kommt TypeScript ins Spiel.\cite{tsEssential}
+Die Entwicklung einer Webanwendung kommt heutzutage ohne JavaScript kaum noch aus. Die Hegemonie dieser Sprache wird nicht mehr angezweifelt, und ihre Gemeinschaft ist eine der wichtigsten in der Welt der Webentwicklung, was sicherlich auf ihre inhärente Flexibilität zurückzuführen ist. Es hat jedoch einige Einschränkungen, wenn es um die Entwicklung komplexer Anwendungen geht, und aus diesem Grund kommt TypeScript ins Spiel.\cite{tsEssential}
 
 \href{https://www.typescriptlang.org/}{TypeScript}\footnote{https://www.typescriptlang.org/} ist eine Programmiersprache, die von Microsoft im Jahr 2012 entwickelt wurde. Sein Hauptanliegen ist es, die Produktivität der komplexen Anwendungsentwicklung zu verbessern.
 
-Es handelt sich um eine Open-Source-Sprache, die als höhere Schicht von Javascript entwickelt wurde. Jeder in Javascript gültige Code ist auch in TypeScript gültig. Die Sprache führt jedoch optionale Funktionen wie Typisierung oder objektorientierte Programmierung ein. Um diese Funktionen nutzen zu können, ist keine Bibliothek erforderlich, aber nur das Tool für die TypeScript-Kompilierung. Somit wird der ausgeführte Code ein Javascript-Äquivalent des kompilierten TypeScript-Codes sein.
+Es handelt sich um eine Open-Source-Sprache, die als höhere Schicht von JavaScript entwickelt wurde. Jeder in JavaScript gültige Code ist auch in TypeScript gültig. Die Sprache führt jedoch optionale Funktionen wie Typisierung oder objektorientierte Programmierung ein. Um diese Funktionen nutzen zu können, ist keine Bibliothek erforderlich, aber nur das Tool für die TypeScript-Kompilierung. Somit wird der ausgeführte Code ein JavaScript-Äquivalent des kompilierten TypeScript-Codes sein.
 
-Dieser Sicherheitstyp hat ihn bei Javascript-Entwicklern sehr beliebt gemacht, wie die
+Dieser Sicherheitstyp hat ihn bei JavaScript-Entwicklern sehr beliebt gemacht, wie die
 \href{https://survey.stackoverflow.co/2022/\#most-loved-dreaded-and-wanted-language-want}{Stackoverflow Survey 2022}\footnote{https://survey.stackoverflow.co/2022/\#most-loved-dreaded-and-wanted-language-want}
 beweist:
 
@@ -54,13 +54,13 @@ Sein Hauptzweck besteht darin, JavaScript-Dateien für die Verwendung in einem B
 
 Es gibt viele verschiedene Bündler wie \href{https://parceljs.org/}{Parceljs}\footnote{https://parceljs.org/}, \href{https://github.com/rollup/rollup}{Rollupjs}\footnote{https://github.com/rollup/rollup} oder \href{https://github.com/browserify/browserify}{Browserify}\footnote{https://github.com/browserify/browserify}.
 Das von uns verwendete Web-Framework (das im nächsten Abschnitt vorgestellt wird) kommt jedoch fertig mit einer webpack-Konfiguration.
-So wird webpack neben seiner Reife, seinen zahlreichen Plug-ins und seiner umfangreichen Konfiguration auch für den Aufbau unserer Javascript-Anwendung verwendet.
+So wird webpack neben seiner Reife, seinen zahlreichen Plug-ins und seiner umfangreichen Konfiguration auch für den Aufbau unserer JavaScript-Anwendung verwendet.
 
 \subsection{Angular}
-Mit Javascript können wir ein HTML DOM leicht manipulieren. Das Hinzufügen, Ändern oder Löschen eines Node zur Laufzeit, ohne die Seite neu zu laden, bietet dem Benutzer eine sehr dynamische und leichte Schnittstelle, die dem ähnelt, was er in einer nativen Anwendung sehen kann.
+Mit JavaScript können wir ein HTML DOM leicht manipulieren. Das Hinzufügen, Ändern oder Löschen eines Node zur Laufzeit, ohne die Seite neu zu laden, bietet dem Benutzer eine sehr dynamische und leichte Schnittstelle, die dem ähnelt, was er in einer nativen Anwendung sehen kann.
 
-Leider kann die Entwicklung einer Webanwendung allein mithilfe von Javascript sehr viel Zeit in Anspruch nehmen und schwer skalierbar werden.
-Aus diesem Grund haben sehr marktführende Unternehmen wie Google oder Facebook ihr Javascript-Framework entwickelt, um dynamische Schnittstellen einfach zu erstellen.
+Leider kann die Entwicklung einer Webanwendung allein mithilfe von JavaScript sehr viel Zeit in Anspruch nehmen und schwer skalierbar werden.
+Aus diesem Grund haben sehr marktführende Unternehmen wie Google oder Facebook ihr JavaScript-Framework entwickelt, um dynamische Schnittstellen einfach zu erstellen.
 
 Ein Framework ist eine semi-vollständige Applikation. Es stellt für Applikationen eine wiederverwendbare, gemeinsame Struktur zur Verfügung.
 Die Entwickler bauen das Framework in ihre eigene Applikation ein und erweitern es derart, dass es ihren spezifischen Anforderungen entspricht.
@@ -129,7 +129,7 @@ Es wurde daher beschlossen, diesen css-Prozessor im Projekt zu verwenden. Außer
 \subsection{Angular Routing}
 
 Der Antrag wird also von einer einzigen Seite generiert, was aber nicht bedeutet, dass ein Wechsel der URLs nicht möglich ist.
-Tatsächlich kann eine SPA dank Javascript auf verschiedenen URLs laufen.
+Tatsächlich kann eine SPA dank JavaScript auf verschiedenen URLs laufen.
 Angular bringt ein eigenes Routing-System namens Angular Routing\footnote{https://angular.io/guide/routing-overview} mit, das es ermöglicht, bestimmte Komponenten auf der Grundlage der URL anzuzeigen. Das Projekt wird diese Lösung verwenden, um das Routing der Anwendung zu verwalten.
 
 \subsection{Design System (PrimeNg)} \label{sec:primeng}

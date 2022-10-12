@@ -22,6 +22,68 @@
 \input{Chapters/Anhang/QuestionBoardMap}
 \input{Chapters/Anhang/PlaningDevicesFlow}
 
+\begin{lstlisting}[
+  language=javascript,
+  caption={Definition von \lstinline{DistancePipe}},
+  captionpos=b,
+  label={lst:distancePipe}
+]
+export type System = "metric" | "imperial"
+export type MetricUnit = "m" | "km"
+export type ImperialUnit = "yd" | "ft" | "mi" | "in"
+export type Unit = ImperialUnit | MetricUnit
+export type Convertion = `m-${ImperialUnit}`
+
+export type ConversionResult = {value: number; unit: Unit, system: System}
+
+@Pipe({
+  name: "distance",
+})
+export class DistancePipe implements PipeTransform {
+  constructor(private userService: UserService) {}
+
+  transform(distanceInMeters: number): string {
+    const { value, unit } = this.getNormalized(distanceInMeters)
+    return value + unit
+  }
+
+  public getNormalized(distanceInMeters: number): ConversionResult {
+    const unit: MetricUnit = distanceInMeters >= 1000 ? "km" : "m"
+    const unitSystem = this.userService.getLocalSettings().unitSystem
+
+    if (unitSystem === "imperial"){
+      const imperialUnit = unit === "m" ? "ft" : "mi"
+      return {
+        value: this.getImperialConvertion(distanceInMeters, `m-${imperialUnit}`),
+        unit: imperialUnit,
+        system: "imperial"
+      }
+    }
+
+    const distance = unit === "km" ? distanceInMeters / 1000 : distanceInMeters
+    return {
+      value: distance,
+      unit,
+      system: "metric"
+    }
+  }
+
+  public getImperialConvertion(distanceInMeter: number, convertion: Convertion): number {
+    switch (convertion) {
+      case "m-yd": // convert from Meters-Yard
+        return distanceInMeter / 91.44
+      case "m-ft": // convert from Meters-Feet
+        return distanceInMeter / 0.3048
+      case "m-in": // convert from Meter-Inches
+        return distanceInMeter / 0.0254
+      case "m-mi": // convert from Meter-Miles
+        return distanceInMeter * 0.00062137
+    }
+  }
+}
+\end{lstlisting}
+
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=8cm]{map_old_site_details}
